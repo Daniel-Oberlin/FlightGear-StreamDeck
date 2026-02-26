@@ -1,5 +1,17 @@
 var _http_control_code = func() {
 
+    var set_property_delta = func(trigger, prop, delta, display_name, format_string) {
+        setlistener(trigger, func(n) {
+            if (n.getValue() == 1) {
+                var cur = num(getprop(prop)) or 0;
+                var updated = cur + delta;
+                setprop(prop, updated);
+                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+                setprop(trigger, 0);
+            }
+        }, 1);
+    };
+
     var autostart_trigger = "/sim/remote/c172/autostart";
     setlistener(autostart_trigger, func(n) {
         if (n.getValue() == 1) {
@@ -19,29 +31,19 @@ var _http_control_code = func() {
         }
     }, 1);
 
-    var elevator_trim_increase_trigger = "/sim/remote/c172/elevator-trim-increase";
-    setlistener(elevator_trim_increase_trigger, func(n) {
-        if (n.getValue() == 1) {
-            var prop = "/controls/flight/elevator-trim";
-            var cur = num(getprop(prop)) or 0;
-            var updated = cur + 0.001;
-            setprop(prop, updated);
-            gui.popupTip("Elevator trim: " ~ sprintf("%.3f", updated));
-            setprop(elevator_trim_increase_trigger, 0);
-        }
-    }, 1);
-    
-    var elevator_trim_decrease_trigger = "/sim/remote/c172/elevator-trim-decrease";
-    setlistener(elevator_trim_decrease_trigger, func(n) {
-        if (n.getValue() == 1) {
-            var prop = "/controls/flight/elevator-trim";
-            var cur = num(getprop(prop)) or 0;
-            var updated = cur - 0.001;
-            setprop(prop, updated);
-            gui.popupTip("Elevator trim: " ~ sprintf("%.3f", updated));
-            setprop(elevator_trim_decrease_trigger, 0);
-        }
-    }, 1);
+    set_property_delta(
+        "/sim/remote/c172/elevator-trim-increase",
+        "/controls/flight/elevator-trim",
+        0.001,
+        "Elevator trim",
+        "%.3f");
+
+    set_property_delta(
+        "/sim/remote/c172/elevator-trim-decrease",
+        "/controls/flight/elevator-trim",
+        -0.001,
+        "Elevator trim",
+        "%.3f");
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
