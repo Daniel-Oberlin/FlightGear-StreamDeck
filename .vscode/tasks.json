@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Copy http-control.nas to FlightGear Nasal directory",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "copy",
+                "/Y",
+                ".\\Config\\http-control.nas",
+                "C:\\Users\\Daniel\\FlightGear\\Downloads\\fgdata_2024_1\\Nasal\\http-control.nas"
+            ],
+            "windows": {
+                "command": "cmd"
+            }
+        }
+    ]
+}
