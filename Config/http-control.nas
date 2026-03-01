@@ -74,6 +74,23 @@ var _http_control_code = func() {
             setprop(set_property_delta_modulo_trigger, "");
         }
     }, 1);
+
+    var exchange_property_value_trigger = "/sim/remote/c172/exchange-property-values";
+    setlistener(exchange_property_value_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            var parts = split(";", value);
+            if (size(parts) >= 2) {
+                var prop1 = parts[0];
+                var prop2 = parts[1];
+                var val1 = getprop(prop1);
+                var val2 = getprop(prop2);
+                setprop(prop1, val2);
+                setprop(prop2, val1);
+            }
+            setprop(exchange_property_value_trigger, "");
+        }
+    }, 1);
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
