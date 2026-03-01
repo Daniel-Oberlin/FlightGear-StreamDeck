@@ -17,7 +17,7 @@
             }
         },
         {
-            "label": "Copy StreamDeck ProfilesV3 to Config directory",
+            "label": "Copy StreamDeck ProfilesV3 to project directory",
             "type": "shell",
             "command": "cmd",
             "args": [
