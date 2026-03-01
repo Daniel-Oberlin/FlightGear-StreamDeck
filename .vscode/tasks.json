@@ -15,6 +15,18 @@
             "windows": {
                 "command": "cmd"
             }
+        },
+        {
+            "label": "Copy StreamDeck ProfilesV3 to Config directory",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "robocopy \"C:\\Users\\Daniel\\AppData\\Roaming\\Elgato\\StreamDeck\\ProfilesV3\" \".\\StreamDeck\\ProfilesV3\" /MIR"
+            ],
+            "windows": {
+                "command": "cmd"
+            }
         }
     ]
 }
