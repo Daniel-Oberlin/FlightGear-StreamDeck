@@ -54,6 +54,26 @@ var _http_control_code = func() {
             setprop(set_property_value_trigger, "");
         }
     }, 1);
+
+    var set_property_delta_modulo_trigger = "/sim/remote/c172/set-property-delta-modulo";
+    setlistener(set_property_delta_modulo_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            var parts = split(";", value);
+            if (size(parts) >= 5) {
+                var prop = parts[0];
+                var delta = num(parts[1]);
+                var modulo = num(parts[2]);
+                var display_name = parts[3];
+                var format_string = parts[4];
+                var cur = num(getprop(prop)) or 0;
+                var updated = math.mod(cur + delta, modulo);
+                setprop(prop, updated);
+                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+            }
+            setprop(set_property_delta_modulo_trigger, "");
+        }
+    }, 1);
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
