@@ -75,6 +75,29 @@ var _http_control_code = func() {
         }
     }, 1);
 
+    var set_property_delta_range_trigger = "/sim/remote/c172/set-property-delta-range";
+    setlistener(set_property_delta_range_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            var parts = split(";", value);
+            if (size(parts) >= 6) {
+                var prop = parts[0];
+                var delta = num(parts[1]);
+                var min_val = num(parts[2]);
+                var max_val = num(parts[3]);
+                var display_name = parts[4];
+                var format_string = parts[5];
+                var cur = num(getprop(prop)) or 0;
+                var updated = cur + delta;
+                if (updated < min_val) updated = min_val;
+                if (updated > max_val) updated = max_val;
+                setprop(prop, updated);
+                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+            }
+            setprop(set_property_delta_range_trigger, "");
+        }
+    }, 1);
+
     var exchange_property_value_trigger = "/sim/remote/c172/exchange-property-values";
     setlistener(exchange_property_value_trigger, func(n) {
         var value = n.getValue();
