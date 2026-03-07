@@ -114,6 +114,23 @@ var _http_control_code = func() {
             setprop(exchange_property_value_trigger, "");
         }
     }, 1);
+
+    var toggle_boolean_property_trigger = "/sim/remote/c172/toggle-boolean-property";
+    setlistener(toggle_boolean_property_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            var parts = split(";", value);
+            if (size(parts) >= 2) {
+                var prop = parts[0];
+                var display_name = parts[1];
+                var current = getprop(prop);
+                var toggled = (current == "true") ? "false" : "true";
+                setprop(prop, toggled);
+                gui.popupTip(display_name ~ ": " ~ toggled);
+            }
+            setprop(toggle_boolean_property_trigger, "");
+        }
+    }, 1);
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
