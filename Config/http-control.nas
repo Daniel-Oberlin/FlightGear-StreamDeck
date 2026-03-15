@@ -68,6 +68,9 @@ var _http_control_code = func() {
                 var format_string = parts[4];
                 var cur = num(getprop(prop)) or 0;
                 var updated = math.mod(cur + delta, modulo);
+                if (modulo < 0) {
+                    updated = -1 * updated;
+                }
                 setprop(prop, updated);
                 gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
             }
