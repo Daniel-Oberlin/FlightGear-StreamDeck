@@ -134,6 +134,27 @@ var _http_control_code = func() {
             setprop(toggle_boolean_property_trigger, "");
         }
     }, 1);
+
+    var set_mag_starter_trigger = "/sim/remote/c172/set-mag-starter";
+    setlistener(set_mag_starter_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            var val = num(value);
+            # By default
+            setprop("/controls/switches/starter", 0);
+            setprop("/engines/active-engine/auto-start", 0);
+            if (val >= 0 and val < 4) {
+                setprop("/controls/switches/magnetos", val);
+                gui.popupTip("magnetos: " ~ sprintf("%d", val))
+            } else if (val == 4) {
+                setprop("/controls/switches/starter", 1);
+                setprop("/engines/active-engine/auto-start", 1);
+                gui.popupTip("starter engaged");
+            }
+        }
+        setprop(set_mag_starter_trigger, "");
+    }, 1);
+
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
