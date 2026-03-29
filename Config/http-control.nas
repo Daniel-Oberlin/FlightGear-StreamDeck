@@ -188,6 +188,24 @@ var _http_control_code = func() {
         setprop(set_mag_starter_trigger, "");
     }, 1);
 
+    var set_heading_indicator_delta_trigger = "/sim/remote/c172/set-heading-indicator-delta";
+    setlistener(set_heading_indicator_delta_trigger, func(n) {
+        var value = n.getValue();
+        if (value != nil and value != "") {
+            setprop("/instrumentation/heading-indicator/error-deg", 0);
+            setprop("/instrumentation/heading-indicator/offset-deg", 0);
+            var delta = num(value);
+            var prop = "/instrumentation/heading-indicator/align-deg";
+            var cur = num(getprop(prop)) or 0;
+            var updated = math.mod(cur + delta, 360);
+            setprop(prop, updated);
+            var indicated_heading = num(getprop("/instrumentation/heading-indicator/indicated-heading-deg")) or 0;
+            var indicated_compass = num(getprop("/instrumentation/magnetic-compass/indicated-heading-deg")) or 0;
+            gui.popupTip("Heading: " ~ sprintf("%d", indicated_heading) ~ "; Compass: " ~ sprintf("%d", indicated_compass));
+        }
+        setprop(set_heading_indicator_delta_trigger, "");
+    }, 1);
+
 }
 
 setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);
