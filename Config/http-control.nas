@@ -29,10 +29,21 @@ var _http_control_code = func() {
                 var delta = num(parts[1]);
                 var display_name = parts[2];
                 var format_string = parts[3];
+                var prop2 = nil;
+                var display_name2 = nil;
+                if (size(parts) >= 6) {
+                    prop2 = parts[4];
+                    display_name2 = parts[5];
+                }
                 var cur = num(getprop(prop)) or 0;
                 var updated = cur + delta;
                 setprop(prop, updated);
-                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+                var msg = display_name ~ ": " ~ sprintf(format_string, updated);
+                if (prop2 != nil and display_name2 != nil) {
+                    var val2 = num(getprop(prop2)) or 0;
+                    msg = msg ~ "; " ~ display_name2 ~ ": " ~ sprintf(format_string, val2);
+                }
+                gui.popupTip(msg);
             }
             setprop(set_property_delta_trigger, "");
         }
@@ -66,13 +77,24 @@ var _http_control_code = func() {
                 var modulo = num(parts[2]);
                 var display_name = parts[3];
                 var format_string = parts[4];
+                var prop2 = nil;
+                var display_name2 = nil;
+                if (size(parts) >= 7) {
+                    prop2 = parts[5];
+                    display_name2 = parts[6];
+                }
                 var cur = num(getprop(prop)) or 0;
                 var updated = math.mod(cur + delta, modulo);
                 if (modulo < 0) {
                     updated = -1 * updated;
                 }
                 setprop(prop, updated);
-                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+                var msg = display_name ~ ": " ~ sprintf(format_string, updated);
+                if (prop2 != nil and display_name2 != nil) {
+                    var val2 = num(getprop(prop2)) or 0;
+                    msg = msg ~ "; " ~ display_name2 ~ ": " ~ sprintf(format_string, val2);
+                }
+                gui.popupTip(msg);
             }
             setprop(set_property_delta_modulo_trigger, "");
         }
@@ -90,12 +112,23 @@ var _http_control_code = func() {
                 var max_val = num(parts[3]);
                 var display_name = parts[4];
                 var format_string = parts[5];
+                var prop2 = nil;
+                var display_name2 = nil;
+                if (size(parts) >= 8) {
+                    prop2 = parts[6];
+                    display_name2 = parts[7];
+                }
                 var cur = num(getprop(prop)) or 0;
                 var updated = cur + delta;
                 if (updated < min_val) updated = min_val;
                 if (updated > max_val) updated = max_val;
                 setprop(prop, updated);
-                gui.popupTip(display_name ~ ": " ~ sprintf(format_string, updated));
+                var msg = display_name ~ ": " ~ sprintf(format_string, updated);
+                if (prop2 != nil and display_name2 != nil) {
+                    var val2 = num(getprop(prop2)) or 0;
+                    msg = msg ~ "; " ~ display_name2 ~ ": " ~ sprintf(format_string, val2);
+                }
+                gui.popupTip(msg);
             }
             setprop(set_property_delta_range_trigger, "");
         }
