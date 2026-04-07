@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Copy http-control.nas to FlightGear Nasal directory",
+            "label": "Windows - Copy http-control.nas to FlightGear Nasal directory",
             "type": "shell",
             "command": "cmd",
             "args": [
