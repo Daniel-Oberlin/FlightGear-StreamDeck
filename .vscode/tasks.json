@@ -9,7 +9,7 @@
                 "/c",
                 "copy",
                 "/Y",
-                ".\\Config\\http-control.nas",
+                ".\\Nasal\\http-control.nas",
                 "C:\\Users\\Daniel\\FlightGear\\Downloads\\fgdata_2024_1\\Nasal\\http-control.nas"
             ],
             "windows": {
