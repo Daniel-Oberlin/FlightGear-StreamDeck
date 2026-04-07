@@ -22,7 +22,7 @@
             "command": "cmd",
             "args": [
                 "/c",
-                "robocopy \"C:\\Users\\Daniel\\AppData\\Roaming\\Elgato\\StreamDeck\\ProfilesV3\" \".\\StreamDeck\\ProfilesV3\" /MIR"
+                "robocopy \"C:\\Users\\Daniel\\AppData\\Roaming\\Elgato\\StreamDeck\\ProfilesV3\" \".\\Elgato\\StreamDeck\\ProfilesV3\" /MIR"
             ],
             "windows": {
                 "command": "cmd"
