@@ -27,8 +27,7 @@
             "windows": {
                 "command": "cmd"
             }
-        }
-        ,
+        },
         {
             "label": "Copy project StreamDeck ProfilesV3 to Users Daniel",
             "type": "shell",
