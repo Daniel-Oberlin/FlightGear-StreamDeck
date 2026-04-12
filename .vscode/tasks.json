@@ -28,5 +28,18 @@
                 "command": "cmd"
             }
         }
+        ,
+        {
+            "label": "Copy project StreamDeck ProfilesV3 to Users Daniel",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "robocopy \".\\Elgato\\StreamDeck\\ProfilesV3\" \"C:\\Users\\Daniel\\AppData\\Roaming\\Elgato\\StreamDeck\\ProfilesV3\" /MIR"
+            ],
+            "windows": {
+                "command": "cmd"
+            }
+        }
     ]
 }
