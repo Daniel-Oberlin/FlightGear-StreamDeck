@@ -103,7 +103,7 @@
         "anticlockwise": "Default",
         "clockwise": "Default",
         "device": "sd-A00SA5382PF22A",
-        "profile": "FlightGear/Main"
+        "profile": "FlightGear/View"
       },
       "states": [
         {
@@ -165,7 +165,7 @@
         "anticlockwise": "Default",
         "clockwise": "Default",
         "device": "sd-A00SA5382PF22A",
-        "profile": "FlightGear/Main"
+        "profile": "FlightGear/Start"
       },
       "states": [
         {
@@ -227,7 +227,7 @@
         "anticlockwise": "Default",
         "clockwise": "Default",
         "device": "sd-A00SA5382PF22A",
-        "profile": "FlightGear/Main"
+        "profile": "FlightGear/Nav"
       },
       "states": [
         {
