@@ -27,6 +27,36 @@
             "windows": {
                 "command": "cmd"
             }
+        },
+        {
+            "label": "Copy OpenDeck profiles and images to project directory",
+            "type": "shell",
+            "command": "rsync",
+            "args": [
+                "-av",
+                "--delete",
+                "/Users/daniel/Library/Application Support/opendeck/profiles",
+                "/Users/daniel/Library/Application Support/opendeck/images",
+                "/Users/daniel/Desktop/dev/FlightGear-StreamDeck/opendeck/"
+            ],
+            "osx": {
+                "command": "rsync"
+            }
+        },
+        {
+            "label": "Copy OpenDeck profiles and images to Application Support",
+            "type": "shell",
+            "command": "rsync",
+            "args": [
+                "-av",
+                "--delete",
+                "/Users/daniel/Desktop/dev/FlightGear-StreamDeck/opendeck/profiles",
+                "/Users/daniel/Desktop/dev/FlightGear-StreamDeck/opendeck/images",
+                "/Users/daniel/Library/Application Support/opendeck/"
+            ],
+            "osx": {
+                "command": "rsync"
+            }
         }
     ]
 }
