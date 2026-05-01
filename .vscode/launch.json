@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug fgcmd",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fgcmd",
+                    "--package=fgcmd",
+                    "--manifest-path=fgcmd/Cargo.toml"
+                ],
+                "filter": {
+                    "name": "fgcmd",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}/fgcmd"
+        }
+    ]
+}
