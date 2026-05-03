@@ -1,0 +1,127 @@
+Command,URL,Body,Group
+ADF_ADF,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/adf/adf-btn;ADF;%s""}",ADF
+ADF_BFO,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/adf/bfo-btn;ADF;%s""}",ADF
+ADF_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-1;KHz;%d""}",ADF
+ADF_FRQ_-10,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-10;KHz;%d""}",ADF
+ADF_FRQ_-100,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-100;KHz;%d""}",ADF
+ADF_FRQ_-200,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-200;KHz;%d""}",ADF
+ADF_EX,http://localhost:8080/json/sim/remote/c172/exchange-property-values,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;/instrumentation/adf/frequencies/selected-khz""}",ADF
+ADF_FRQ_1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;1;KHz;%d""}",ADF
+ADF_FRQ_10,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;10;KHz;%d""}",ADF
+ADF_FRQ_100,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;100;KHz;%d""}",ADF
+ADF_FRQ_200,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;200;KHz;%d""}",ADF
+ADF_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/adf/volume-norm;-0.1;0;1;Volume;%.1f""}",ADF
+ADF_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/adf/volume-norm;0.1;0;1;Volume;%.1f""}",ADF
+ADF_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/adf;1;-2;Speaker;%d""}",ADF
+COM1_FRQ_-0.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM1
+COM1_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-0.1;MHz;%.3f""}",COM1
+COM1_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-1;MHz;%.3f""}",COM1
+COM1_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-5;MHz;%.3f""}",COM1
+COM1_EX,http://localhost:8080/json/sim/remote/c172/exchange-property-values,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;/instrumentation/comm/frequencies/selected-mhz""}",COM1
+COM1_FRQ_.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;0.025;MHz;%.3f""}",COM1
+COM1_FRQ_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;0.1;MHz;%.3f""}",COM1
+COM1_FRQ_1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;1;MHz;%.3f""}",COM1
+COM1_FRQ_5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;5;MHz;%.3f""}",COM1
+COM1_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm/volume-selected;-0.1;0;1;Volume;%.1f""}",COM1
+COM1_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm/volume-selected;0.1;0;1;Volume;%.1f""}",COM1
+COM1_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/com1;1;-2;Speaker;%d""}",COM1
+COM2_FRQ_-0.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM2
+COM2_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-0.1;MHz;%.3f""}",COM2
+COM2_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-1;MHz;%.3f""}",COM2
+COM2_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-5;MHz;%.3f""}",COM2
+COM2_EX,http://localhost:8080/json/sim/remote/c172/exchange-property-values,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;/instrumentation/comm[1]/frequencies/selected-mhz""}",COM2
+COM2_FRQ_.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;0.025;MHz;%.3f""}",COM2
+COM2_FRQ_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;0.1;MHz;%.3f""}",COM2
+COM2_FRQ_1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;1;MHz;%.3f""}",COM2
+COM2_FRQ_5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;5;MHz;%.3f""}",COM2
+COM2_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm[1]/volume-selected;-0.1;0;1;Volume;%.1f""}",COM2
+COM2_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm[1]/volume-selected;0.1;0;1;Volume;%.1f""}",COM2
+COM2_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/com2;1;-2;Speaker;%d""}",COM2
+DME_MIN_KTS,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/dme/switch-min-kts;MIN-KTS;%s""}",DME
+DME_NAV1,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/instrumentation/dme/switch-position;1;NAV1;""}",DME
+DME_NAV2,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/instrumentation/dme/switch-position;3;NAV2;""}",DME
+DME_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/dme;1;-2;Speaker;%d""}",DME
+MAIN_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.01f""}",MAIN
+MAIN_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.01f""}",MAIN
+MAIN_ELE_-.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.001;Elevator trim;%.2f""}",MAIN
+MAIN_ELE_-.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.005;Elevator trim;%.2f""}",MAIN
+MAIN_ELE_ZERO,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/controls/flight/elevator-trim;0.0;Elevator trim;%.2f""}",MAIN
+MAIN_ELE_.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.001;Elevator trim;%.2f""}",MAIN
+MAIN_ELE_.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.005;Elevator trim;%.2f""}",MAIN
+MAIN_FLAPS_-.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;-0.333334;0;1;Flaps;%.01f""}",MAIN
+MAIN_FLAPS_.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;0.333334;0;1;Flaps;%.01f""}",MAIN
+MAIN_LIGHTS_BRIGHTER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;0.1;0;1;Instrument Lighting;%.01f""}",MAIN
+MAIN_LIGHTS_DIMMER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;-0.1;0;1;Instrument Lighting;%.01f""}",MAIN
+MAIN_PAUSE,http://localhost:8080/run.cgi?value=pause,,MAIN
+NAV1_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/nav1;1;-2;Speaker;%d""}",NAV1
+NAV1_FRQ_-.05,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;-0.05;MHz;%.2f""}",NAV1
+NAV1_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;-0.1;MHz;%.2f""}",NAV1
+NAV1_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;-1;MHz;%.2f""}",NAV1
+NAV1_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;-5;MHz;%.2f""}",NAV1
+NAV1_EX,http://localhost:8080/json/sim/remote/c172/exchange-property-values,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;/instrumentation/nav/frequencies/selected-mhz""}",NAV1
+NAV1_FRQ_.05,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;0.05;MHz;%.2f""}",NAV1
+NAV1_FRQ_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;0.1;MHz;%.2f""}",NAV1
+NAV1_FRQ_1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;1;MHz;%.2f""}",NAV1
+NAV1_FRQ_5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;5;MHz;%.2f""}",NAV1
+NAV1_IDENT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/nav/ident-audible;Ident;%s""}",NAV1
+NAV1_RAD_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;-1;360;Radial;%d""}",NAV1
+NAV1_RAD_-10,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;-10;360;Radial;%d""}",NAV1
+NAV1_RAD_-20,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;-20;360;Radial;%d""}",NAV1
+NAV1_RAD_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;-5;360;Radial;%d""}",NAV1
+NAV1_RAD_1,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;1;360;Radial;%d""}",NAV1
+NAV1_RAD_10,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;10;360;Radial;%d""}",NAV1
+NAV1_RAD_20,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;20;360;Radial;%d""}",NAV1
+NAV1_RAD_5,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav/radials/selected-deg;5;360;Radial;%d""}",NAV1
+NAV1_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/nav/volume;-0.1;0;1;Volume;%.1f""}",NAV1
+NAV1_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/nav/volume;0.1;0;1;Volume;%.1f""}",NAV1
+NAV2_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/nav2;1;-2;Speaker;%d""}",NAV2
+NAV2_FRQ_-.05,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;-0.05;MHz;%.2f""}",NAV2
+NAV2_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;-0.1;MHz;%.2f""}",NAV2
+NAV2_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;-1;MHz;%.2f""}",NAV2
+NAV2_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;-5;MHz;%.2f""}",NAV2
+NAV2_EX,http://localhost:8080/json/sim/remote/c172/exchange-property-values,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;/instrumentation/nav[1]/frequencies/selected-mhz""}",NAV2
+NAV2_FRQ_.05,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;0.05;MHz;%.2f""}",NAV2
+NAV2_FRQ_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;0.1;MHz;%.2f""}",NAV2
+NAV2_FRQ_1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;1;MHz;%.2f""}",NAV2
+NAV2_FRQ_5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav[1]/frequencies/standby-mhz;5;MHz;%.2f""}",NAV2
+NAV2_IDENT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/nav[1]/ident-audible;Ident;%s""}",NAV2
+NAV2_RAD_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;-1;360;Radial;%d""}",NAV2
+NAV2_RAD_-10,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;-10;360;Radial;%d""}",NAV2
+NAV2_RAD_-20,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;-20;360;Radial;%d""}",NAV2
+NAV2_RAD_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;-5;360;Radial;%d""}",NAV2
+NAV2_RAD_1,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;1;360;Radial;%d""}",NAV2
+NAV2_RAD_10,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;10;360;Radial;%d""}",NAV2
+NAV2_RAD_20,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;20;360;Radial;%d""}",NAV2
+NAV2_RAD_5,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/nav[1]/radials/selected-deg;5;360;Radial;%d""}",NAV2
+NAV2_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/nav[1]/volume;-0.1;0;1;Volume;%.1f""}",NAV2
+NAV2_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/nav[1]/volume;0.1;0;1;Volume;%.1f""}",NAV2
+START_ELE_ALT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-alt;Alternator;%s""}",START_ELE
+START_ELE_AVX,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-avionics;Avionics;%s""}",START_ELE
+START_ELE_BAT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-bat;Battery;%s""}",START_ELE
+START_ELE_PRIMER,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/engines/engine/primer;1;Primer;%d""}",START_ENG
+START_ENG_OFF,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 0}",START_ENG
+START_ENG_AUTOSTART,http://localhost:8080/json/sim/remote/c172/autostart,"{""value"": 1}",START_ENG
+START_ENG_MAG1,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 1}",START_ENG
+START_ENG_MAG2,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 2}",START_ENG
+START_ENG_MAG3,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 3}",START_ENG
+START_ENG_START,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 4}",START_ENG
+START_ENG_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.01f""}",START_ENG
+START_ENG_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.01f""}",START_ENG
+START_SET_HEAD_-1,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-1""}",START_SET
+START_SET_HEAD_-10,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-10""}",START_SET
+START_SET_HEAD_-20,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-20""}",START_SET
+START_SET_HEAD_-5,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-5""}",START_SET
+START_SET_RUD_-.01,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/rudder-trim;-0.01;Trim;%.2f""}",START_SET
+START_SET_RUD_.01,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/rudder-trim;0.01;Trim;%.2f""}",START_SET
+START_SET_ALT_-.01,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/altimeter/setting-inhg;-0.01;Hg Altimeter;%.2f;/environment/pressure-sea-level-inhg;Hg Pressure""}",START_SET
+START_SET_ALT_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/altimeter/setting-inhg;-0.1;Hg Altimeter;%.2f;/environment/pressure-sea-level-inhg;Hg Pressure""}",START_SET
+START_SET_ALT_.01,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/altimeter/setting-inhg;0.01;Hg Altimeter;%.2f;/environment/pressure-sea-level-inhg;Hg Pressure""}",START_SET
+START_SET_ALT_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/altimeter/setting-inhg;0.1;Hg Altimeter;%.2f;/environment/pressure-sea-level-inhg;Hg Pressure""}",START_SET
+START_SET_HEAD_1,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""1""}",START_SET
+START_SET_HEAD_10,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""10""}",START_SET
+START_SET_HEAD_20,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""20""}",START_SET
+START_SET_HEAD_5,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""5""}",START_SET
+VIEW_MENU,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/sim/menubar/visibility;Menu""}",VIEW
+VIEW_CTRLS,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/sim/panel-hotspots;Show Controls""}",VIEW
+VIEW_GLIDE,http://localhost:8080/json/sim/remote/c172/glide-slope-tunnel,"{""value"": 1}",VIEW
+VIEW_FULL,http://localhost:8080/run.cgi?value=toggle-fullscreen,,VIEW
