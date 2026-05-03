@@ -17,7 +17,7 @@
             }
         },
         {
-            "label": "Copy StreamDeck ProfilesV3 to project directory",
+            "label": "Windows - Copy StreamDeck ProfilesV3 to project directory",
             "type": "shell",
             "command": "cmd",
             "args": [
@@ -29,7 +29,7 @@
             }
         },
         {
-            "label": "Copy OpenDeck profiles and images to project directory",
+            "label": "Mac - Copy OpenDeck profiles and images to project directory",
             "type": "shell",
             "command": "rsync",
             "args": [
@@ -44,7 +44,7 @@
             }
         },
         {
-            "label": "Copy OpenDeck profiles and images to Application Support",
+            "label": "Mac - Copy OpenDeck profiles and images to Application Support",
             "type": "shell",
             "command": "rsync",
             "args": [
@@ -55,6 +55,36 @@
                 "/Users/daniel/Library/Application Support/opendeck/"
             ],
             "osx": {
+                "command": "rsync"
+            }
+        },
+        {
+            "label": "Linux - Copy OpenDeck profiles and images to project directory",
+            "type": "shell",
+            "command": "rsync",
+            "args": [
+                "-av",
+                "--delete",
+                "${env:HOME}/.config/opendeck/profiles",
+                "${env:HOME}/.config/opendeck/images",
+                "${workspaceFolder}/opendeck/"
+            ],
+            "linux": {
+                "command": "rsync"
+            }
+        },
+        {
+            "label": "Linux - Copy OpenDeck profiles and images to profile directory",
+            "type": "shell",
+            "command": "rsync",
+            "args": [
+                "-av",
+                "--delete",
+                "${workspaceFolder}/opendeck/profiles",
+                "${workspaceFolder}/opendeck/images",
+                "${env:HOME}/.config/opendeck/"
+            ],
+            "linux": {
                 "command": "rsync"
             }
         }
