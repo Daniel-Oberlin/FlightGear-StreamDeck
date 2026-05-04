@@ -350,11 +350,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "NAV_LIGHTS_BRIGHTER",
+        "down": "MAIN_LIGHTS_BRIGHTER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "NAV_LIGHTS_BRIGHTER"
+        "up": "MAIN_LIGHTS_BRIGHTER"
       },
       "states": [
         {
@@ -603,11 +603,11 @@
       "context": "Keypad.11.0",
       "current_state": 0,
       "settings": {
-        "down": "NAV_LIGHTS_DIMMER",
+        "down": "MAIN_LIGHTS_DIMMER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "NAV_LIGHTS_DIMMER"
+        "up": "MAIN_LIGHTS_DIMMER"
       },
       "states": [
         {
