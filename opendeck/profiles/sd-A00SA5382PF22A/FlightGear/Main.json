@@ -49,7 +49,7 @@
           "background_colour": "#000000",
           "colour": "#FFFFFF",
           "family": "Liberation Sans",
-          "image": "plugins/com.amansprojects.starterpack.sdPlugin/icons/switchProfile.png",
+          "image": "0.png",
           "image_scale": 100,
           "name": "",
           "show": true,
