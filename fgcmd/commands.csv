@@ -41,17 +41,17 @@ DME_MIN_KTS,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"
 DME_NAV1,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/instrumentation/dme/switch-position;1;NAV1;""}",DME
 DME_NAV2,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/instrumentation/dme/switch-position;3;NAV2;""}",DME
 DME_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/dme;1;-2;Speaker;%d""}",DME
-MAIN_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.01f""}",MAIN
-MAIN_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.01f""}",MAIN
+MAIN_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.2f""}",MAIN
+MAIN_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.2f""}",MAIN
 MAIN_ELE_-.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.001;Elevator trim;%.2f""}",MAIN
 MAIN_ELE_-.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.005;Elevator trim;%.2f""}",MAIN
 MAIN_ELE_ZERO,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/controls/flight/elevator-trim;0.0;Elevator trim;%.2f""}",MAIN
-MAIN_ELE_.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.001;Elevator trim;%.2f""}",MAIN
-MAIN_ELE_.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.005;Elevator trim;%.2f""}",MAIN
-MAIN_FLAPS_-.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;-0.333334;0;1;Flaps;%.01f""}",MAIN
-MAIN_FLAPS_.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;0.333334;0;1;Flaps;%.01f""}",MAIN
-MAIN_LIGHTS_BRIGHTER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;0.1;0;1;Instrument Lighting;%.01f""}",MAIN
-MAIN_LIGHTS_DIMMER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;-0.1;0;1;Instrument Lighting;%.01f""}",MAIN
+MAIN_ELE_.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.001;Elevator trim;%.3f""}",MAIN
+MAIN_ELE_.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.005;Elevator trim;%.3f""}",MAIN
+MAIN_FLAPS_-.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;-0.333334;0;1;Flaps;%.1f""}",MAIN
+MAIN_FLAPS_.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;0.333334;0;1;Flaps;%.1f""}",MAIN
+MAIN_LIGHTS_BRIGHTER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;0.1;0;1;Instrument Lighting;%.1f""}",MAIN
+MAIN_LIGHTS_DIMMER,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/lighting/instruments-norm;-0.1;0;1;Instrument Lighting;%.1f""}",MAIN
 MAIN_PAUSE,http://localhost:8080/run.cgi?value=pause,,MAIN
 NAV1_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/nav1;1;-2;Speaker;%d""}",NAV1
 NAV1_FRQ_-.05,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/nav/frequencies/standby-mhz;-0.05;MHz;%.2f""}",NAV1
@@ -98,15 +98,16 @@ NAV2_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,
 START_ELE_ALT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-alt;Alternator;%s""}",START_ELE
 START_ELE_AVX,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-avionics;Avionics;%s""}",START_ELE
 START_ELE_BAT,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/controls/switches/master-bat;Battery;%s""}",START_ELE
-START_ELE_PRIMER,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/engines/engine/primer;1;Primer;%d""}",START_ENG
+START_ENG_PRIMER,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/engines/engine/primer;1;Primer;%d""}",START_ENG
 START_ENG_OFF,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 0}",START_ENG
 START_ENG_AUTOSTART,http://localhost:8080/json/sim/remote/c172/autostart,"{""value"": 1}",START_ENG
+START_ENG_PARKING_BRAKE,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/controls/gear/brake-parking;1;2;Parking Brake;%d""}",
 START_ENG_MAG1,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 1}",START_ENG
 START_ENG_MAG2,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 2}",START_ENG
 START_ENG_MAG3,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 3}",START_ENG
 START_ENG_START,http://localhost:8080/json/sim/remote/c172/set-mag-starter,"{""value"": 4}",START_ENG
-START_ENG_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.01f""}",START_ENG
-START_ENG_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.01f""}",START_ENG
+START_ENG_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.1f""}",START_ENG
+START_ENG_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.1f""}",START_ENG
 START_SET_HEAD_-1,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-1""}",START_SET
 START_SET_HEAD_-10,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-10""}",START_SET
 START_SET_HEAD_-20,http://localhost:8080/json/sim/remote/c172/set-heading-indicator-delta,"{""value"": ""-20""}",START_SET
