@@ -1,9 +1,20 @@
 const COMMAND_DATA: &str = include_str!("../commands.csv");
 const DEFAULT_BASE_URL: &str = "http://localhost:8080";
 const BASE_URL_ENV: &str = "FGCMD_BASE_URL";
+const DEFAULT_LOCK_DIR_ENV: &str = "FGCMD_LOCK_DIR";
+const DEFAULT_INITIAL_DELAY_MS: u64 = 500;
+const INITIAL_DELAY_MS_ENV: &str = "FGCMD_INITIAL_DELAY_MS";
+const DEFAULT_REPEAT_DELAY_MS: u64 = 30;
+const REPEAT_DELAY_MS_ENV: &str = "FGCMD_REPEAT_DELAY_MS";
+const DEFAULT_MAX_DURATION_MS: u64 = 5000;
+const MAX_DURATION_MS_ENV: &str = "FGCMD_MAX_DURATION_MS";
 
 use std::env;
 use std::collections::HashMap;
+use std::fs;
+use std::path::{Path, PathBuf};
+use std::thread;
+use std::time::{Duration, Instant};
 
 use reqwest::Url;
 use serde::Deserialize;
@@ -110,6 +121,87 @@ fn build_command_lookup(data: &str) -> Result<HashMap<String, CommandSpec>, csv:
         .collect()
 }
 
+fn get_lock_dir() -> Result<PathBuf, String> {
+    if let Ok(dir) = env::var(DEFAULT_LOCK_DIR_ENV) {
+        Ok(PathBuf::from(dir))
+    } else {
+        env::temp_dir()
+            .canonicalize()
+            .map_err(|err| format!("failed to get temp dir: {err}"))
+    }
+}
+
+fn get_lock_path(lock_dir: &Path, command: &str) -> PathBuf {
+    lock_dir.join(format!("fgcmd_{}.lock", command))
+}
+
+fn read_env_duration(env_var: &str, default: u64) -> Duration {
+    let millis = env::var(env_var)
+        .ok()
+        .and_then(|s| s.parse::<u64>().ok())
+        .unwrap_or(default);
+    Duration::from_millis(millis)
+}
+
+fn handle_command_with_lock(
+    command: &str,
+    spec: &CommandSpec,
+) -> Result<(), String> {
+    let lock_dir = get_lock_dir()?;
+    let lock_path = get_lock_path(&lock_dir, command);
+
+    if lock_path.exists() {
+        // Button is being released; delete lock file and exit
+        fs::remove_file(&lock_path)
+            .map_err(|err| format!("failed to delete lock file: {err}"))?;
+        return Ok(());
+    }
+
+    // Button is being pressed; create lock file and proceed
+    fs::write(&lock_path, "")
+        .map_err(|err| format!("failed to create lock file: {err}"))?;
+
+    // Send initial command (skip if _NULL)
+    if command != "_NULL" {
+        execute_command(spec)?;
+    } else {
+        eprintln!("[NULL] executing");
+    }
+
+    // Get timing constants from env or defaults
+    let initial_delay = read_env_duration(INITIAL_DELAY_MS_ENV, DEFAULT_INITIAL_DELAY_MS);
+    let repeat_delay = read_env_duration(REPEAT_DELAY_MS_ENV, DEFAULT_REPEAT_DELAY_MS);
+    let max_duration = read_env_duration(MAX_DURATION_MS_ENV, DEFAULT_MAX_DURATION_MS);
+
+    // Sleep before loop
+    thread::sleep(initial_delay);
+
+    let start = Instant::now();
+    loop {
+        // Check if total time exceeded
+        if start.elapsed() >= max_duration {
+            break;
+        }
+
+        // Check if lock file still exists
+        if !lock_path.exists() {
+            break;
+        }
+
+        // Send command again (skip if _NULL)
+        if command != "_NULL" {
+            execute_command(spec)?;
+        } else {
+            eprintln!("[NULL] executing");
+        }
+        thread::sleep(repeat_delay);
+    }
+
+    // Clean up lock file
+    let _ = fs::remove_file(&lock_path);
+    Ok(())
+}
+
 fn main() {
     let lookup = build_command_lookup(COMMAND_DATA).expect("failed to parse commands.csv");
 
@@ -121,20 +213,23 @@ fn main() {
         }
     };
 
-    if command == "_NULL" {
-        eprintln!("NULL command: no request will be sent");
-        return;
-    }
-
-    let spec = match lookup.get(&command) {
-        Some(spec) => spec,
-        None => {
-            eprintln!("unknown command: {command}");
-            std::process::exit(1);
+    let spec = if command == "_NULL" {
+        // For _NULL, create a dummy spec (won't execute HTTP)
+        &CommandSpec {
+            url: String::new(),
+            body: String::new(),
+        }
+    } else {
+        match lookup.get(&command) {
+            Some(spec) => spec,
+            None => {
+                eprintln!("unknown command: {command}");
+                std::process::exit(1);
+            }
         }
     };
 
-    if let Err(message) = execute_command(spec) {
+    if let Err(message) = handle_command_with_lock(&command, spec) {
         eprintln!("{message}");
         std::process::exit(1);
     }
