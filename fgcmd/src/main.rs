@@ -121,6 +121,11 @@ fn main() {
         }
     };
 
+    if command == "_NULL" {
+        eprintln!("NULL command: no request will be sent");
+        return;
+    }
+
     let spec = match lookup.get(&command) {
         Some(spec) => spec,
         None => {
