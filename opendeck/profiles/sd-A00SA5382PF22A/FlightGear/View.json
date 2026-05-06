@@ -100,11 +100,11 @@
       "context": "Keypad.1.0",
       "current_state": 0,
       "settings": {
-        "down": "VIEW_GLIDE",
+        "down": "fgcmd VIEW_GLIDE",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "VIEW_GLIDE"
+        "up": "fgcmd VIEW_GLIDE"
       },
       "states": [
         {
@@ -163,11 +163,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "VIEW_MENU",
+        "down": "fgcmd VIEW_MENU",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "VIEW_MENU"
+        "up": "fgcmd VIEW_MENU"
       },
       "states": [
         {
@@ -226,11 +226,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "VIEW_CTRLS",
+        "down": "fgcmd VIEW_CTRLS",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "VIEW_CTRLS"
+        "up": "fgcmd VIEW_CTRLS"
       },
       "states": [
         {
@@ -289,11 +289,11 @@
       "context": "Keypad.4.0",
       "current_state": 0,
       "settings": {
-        "down": "VIEW_FULL",
+        "down": "fgcmd VIEW_FULL",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "VIEW_FULL"
+        "up": "fgcmd VIEW_FULL"
       },
       "states": [
         {

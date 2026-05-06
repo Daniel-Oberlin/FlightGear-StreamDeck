@@ -100,11 +100,11 @@
       "context": "Keypad.1.0",
       "current_state": 0,
       "settings": {
-        "down": "",
+        "down": "fgcmd ",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": ""
+        "up": "fgcmd "
       },
       "states": [
         {
@@ -163,11 +163,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_RUD_-.01",
+        "down": "fgcmd START_SET_RUD_-.01",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_RUD_-.01"
+        "up": "fgcmd START_SET_RUD_-.01"
       },
       "states": [
         {
@@ -226,11 +226,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_RUD_.01",
+        "down": "fgcmd START_SET_RUD_.01",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_RUD_.01"
+        "up": "fgcmd START_SET_RUD_.01"
       },
       "states": [
         {
@@ -291,11 +291,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "",
+        "down": "fgcmd ",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": ""
+        "up": "fgcmd "
       },
       "states": [
         {
@@ -354,11 +354,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_ALT_-.01",
+        "down": "fgcmd START_SET_ALT_-.01",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_ALT_-.01"
+        "up": "fgcmd START_SET_ALT_-.01"
       },
       "states": [
         {
@@ -417,11 +417,11 @@
       "context": "Keypad.8.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_ALT_.01",
+        "down": "fgcmd START_SET_ALT_.01",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_ALT_.01"
+        "up": "fgcmd START_SET_ALT_.01"
       },
       "states": [
         {
@@ -481,11 +481,11 @@
       "context": "Keypad.10.0",
       "current_state": 0,
       "settings": {
-        "down": "",
+        "down": "fgcmd ",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": ""
+        "up": "fgcmd "
       },
       "states": [
         {
@@ -544,11 +544,11 @@
       "context": "Keypad.11.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_HEAD_-5",
+        "down": "fgcmd START_SET_HEAD_-5",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_HEAD_-5"
+        "up": "fgcmd START_SET_HEAD_-5"
       },
       "states": [
         {
@@ -607,11 +607,11 @@
       "context": "Keypad.12.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_HEAD_-1",
+        "down": "fgcmd START_SET_HEAD_-1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_HEAD_-1"
+        "up": "fgcmd START_SET_HEAD_-1"
       },
       "states": [
         {
@@ -670,11 +670,11 @@
       "context": "Keypad.13.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_HEAD_1",
+        "down": "fgcmd START_SET_HEAD_1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_HEAD_1"
+        "up": "fgcmd START_SET_HEAD_1"
       },
       "states": [
         {
@@ -733,11 +733,11 @@
       "context": "Keypad.14.0",
       "current_state": 0,
       "settings": {
-        "down": "START_SET_HEAD_5",
+        "down": "fgcmd START_SET_HEAD_5",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_SET_HEAD_5"
+        "up": "fgcmd START_SET_HEAD_5"
       },
       "states": [
         {

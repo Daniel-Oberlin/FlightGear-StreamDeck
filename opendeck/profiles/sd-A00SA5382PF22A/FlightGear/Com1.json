@@ -101,11 +101,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_VOL_-.1",
+        "down": "fgcmd COM1_VOL_-.1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_VOL_-.1"
+        "up": "fgcmd COM1_VOL_-.1"
       },
       "states": [
         {
@@ -164,11 +164,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_VOL_.1",
+        "down": "fgcmd COM1_VOL_.1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_VOL_.1"
+        "up": "fgcmd COM1_VOL_.1"
       },
       "states": [
         {
@@ -227,11 +227,11 @@
       "context": "Keypad.4.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_SPKR",
+        "down": "fgcmd COM1_SPKR",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_SPKR"
+        "up": "fgcmd COM1_SPKR"
       },
       "states": [
         {
@@ -290,11 +290,11 @@
       "context": "Keypad.5.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_EX",
+        "down": "fgcmd COM1_EX",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_EX"
+        "up": "fgcmd COM1_EX"
       },
       "states": [
         {
@@ -353,11 +353,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_FRQ_-1",
+        "down": "fgcmd COM1_FRQ_-1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_FRQ_-1"
+        "up": "fgcmd COM1_FRQ_-1"
       },
       "states": [
         {
@@ -416,11 +416,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_FRQ_-.025",
+        "down": "fgcmd COM1_FRQ_-.025",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_FRQ_-.025"
+        "up": "fgcmd COM1_FRQ_-.025"
       },
       "states": [
         {
@@ -479,11 +479,11 @@
       "context": "Keypad.8.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_FRQ_.025",
+        "down": "fgcmd COM1_FRQ_.025",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_FRQ_.025"
+        "up": "fgcmd COM1_FRQ_.025"
       },
       "states": [
         {
@@ -542,11 +542,11 @@
       "context": "Keypad.9.0",
       "current_state": 0,
       "settings": {
-        "down": "COM1_FRQ_1",
+        "down": "fgcmd COM1_FRQ_1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "COM1_FRQ_1"
+        "up": "fgcmd COM1_FRQ_1"
       },
       "states": [
         {

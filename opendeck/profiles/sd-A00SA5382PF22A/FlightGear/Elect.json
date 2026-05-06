@@ -100,11 +100,11 @@
       "context": "Keypad.1.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_MAG1",
+        "down": "fgcmd START_ENG_MAG1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_MAG1"
+        "up": "fgcmd START_ENG_MAG1"
       },
       "states": [
         {
@@ -163,11 +163,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_MAG2",
+        "down": "fgcmd START_ENG_MAG2",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_MAG2"
+        "up": "fgcmd START_ENG_MAG2"
       },
       "states": [
         {
@@ -226,11 +226,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_MAG3",
+        "down": "fgcmd START_ENG_MAG3",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_MAG3"
+        "up": "fgcmd START_ENG_MAG3"
       },
       "states": [
         {
@@ -289,11 +289,11 @@
       "context": "Keypad.4.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_START",
+        "down": "fgcmd START_ENG_START",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_START"
+        "up": "fgcmd START_ENG_START"
       },
       "states": [
         {
@@ -352,11 +352,11 @@
       "context": "Keypad.5.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ELE_AVX",
+        "down": "fgcmd START_ELE_AVX",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ELE_AVX"
+        "up": "fgcmd START_ELE_AVX"
       },
       "states": [
         {
@@ -415,11 +415,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_PRIMER",
+        "down": "fgcmd START_ENG_PRIMER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_PRIMER"
+        "up": "fgcmd START_ENG_PRIMER"
       },
       "states": [
         {
@@ -478,11 +478,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "MAIN_MIX_.02",
+        "down": "fgcmd MAIN_MIX_.02",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "MAIN_MIX_.02"
+        "up": "fgcmd MAIN_MIX_.02"
       },
       "states": [
         {
@@ -542,11 +542,11 @@
       "context": "Keypad.9.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_OFF",
+        "down": "fgcmd START_ENG_OFF",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_OFF"
+        "up": "fgcmd START_ENG_OFF"
       },
       "states": [
         {
@@ -607,11 +607,11 @@
       "context": "Keypad.12.0",
       "current_state": 0,
       "settings": {
-        "down": "MAIN_MIX_-.02",
+        "down": "fgcmd MAIN_MIX_-.02",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "MAIN_MIX_-.02"
+        "up": "fgcmd MAIN_MIX_-.02"
       },
       "states": [
         {

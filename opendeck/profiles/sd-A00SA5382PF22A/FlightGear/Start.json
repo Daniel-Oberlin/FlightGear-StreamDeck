@@ -287,11 +287,11 @@
       "context": "Keypad.5.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_AUTOSTART",
+        "down": "fgcmd START_ENG_AUTOSTART",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_AUTOSTART"
+        "up": "fgcmd START_ENG_AUTOSTART"
       },
       "states": [
         {
@@ -350,11 +350,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "MAIN_LIGHTS_BRIGHTER",
+        "down": "fgcmd MAIN_LIGHTS_BRIGHTER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "MAIN_LIGHTS_BRIGHTER"
+        "up": "fgcmd MAIN_LIGHTS_BRIGHTER"
       },
       "states": [
         {
@@ -416,11 +416,11 @@
       "context": "Keypad.10.0",
       "current_state": 0,
       "settings": {
-        "down": "START_ENG_PARKING_BRAKE",
+        "down": "fgcmd START_ENG_PARKING_BRAKE",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "START_ENG_PARKING_BRAKE"
+        "up": "fgcmd START_ENG_PARKING_BRAKE"
       },
       "states": [
         {
@@ -479,11 +479,11 @@
       "context": "Keypad.11.0",
       "current_state": 0,
       "settings": {
-        "down": "MAIN_LIGHTS_DIMMER",
+        "down": "fgcmd MAIN_LIGHTS_DIMMER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "MAIN_LIGHTS_DIMMER"
+        "up": "fgcmd MAIN_LIGHTS_DIMMER"
       },
       "states": [
         {
