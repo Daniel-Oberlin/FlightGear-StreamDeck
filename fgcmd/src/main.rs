@@ -161,12 +161,8 @@ fn handle_command_with_lock(
     fs::write(&lock_path, "")
         .map_err(|err| format!("failed to create lock file: {err}"))?;
 
-    // Send initial command (skip if _NULL)
-    if command != "_NULL" {
-        execute_command(spec)?;
-    } else {
-        eprintln!("[NULL] executing");
-    }
+    // Send initial command
+    execute_command(spec)?;
 
     // Get timing constants from env or defaults
     let initial_delay = read_env_duration(INITIAL_DELAY_MS_ENV, DEFAULT_INITIAL_DELAY_MS);
@@ -188,12 +184,8 @@ fn handle_command_with_lock(
             break;
         }
 
-        // Send command again (skip if _NULL)
-        if command != "_NULL" {
-            execute_command(spec)?;
-        } else {
-            eprintln!("[NULL] executing");
-        }
+        // Send command again
+        execute_command(spec)?;
         thread::sleep(repeat_delay);
     }
 
@@ -213,19 +205,11 @@ fn main() {
         }
     };
 
-    let spec = if command == "_NULL" {
-        // For _NULL, create a dummy spec (won't execute HTTP)
-        &CommandSpec {
-            url: String::new(),
-            body: String::new(),
-        }
-    } else {
-        match lookup.get(&command) {
-            Some(spec) => spec,
-            None => {
-                eprintln!("unknown command: {command}");
-                std::process::exit(1);
-            }
+    let spec = match lookup.get(&command) {
+        Some(spec) => spec,
+        None => {
+            eprintln!("unknown command: {command}");
+            std::process::exit(1);
         }
     };
 
