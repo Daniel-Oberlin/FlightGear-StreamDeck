@@ -861,7 +861,7 @@
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd NAV1_FRQ_-10"
+        "up": "fgcmd NAV1_RAD_-10"
       },
       "states": [
         {
