@@ -1,6 +1,6 @@
 Command,URL,Body,Group
 ADF_ADF,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/adf/adf-btn;ADF;%s""}",ADF
-ADF_BFO,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/adf/bfo-btn;ADF;%s""}",ADF
+ADF_BFO,http://localhost:8080/json/sim/remote/c172/toggle-boolean-property,"{""value"": ""/instrumentation/adf/bfo-btn;BFO;%s""}",ADF
 ADF_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-1;KHz;%d""}",ADF
 ADF_FRQ_-10,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-10;KHz;%d""}",ADF
 ADF_FRQ_-100,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/adf/frequencies/standby-khz;-100;KHz;%d""}",ADF
@@ -13,7 +13,7 @@ ADF_FRQ_200,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""va
 ADF_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/adf/volume-norm;-0.1;0;1;Volume;%.1f""}",ADF
 ADF_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/adf/volume-norm;0.1;0;1;Volume;%.1f""}",ADF
 ADF_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/adf;1;-2;Speaker;%d""}",ADF
-COM1_FRQ_-0.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM1
+COM1_FRQ_-.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM1
 COM1_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-0.1;MHz;%.3f""}",COM1
 COM1_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-1;MHz;%.3f""}",COM1
 COM1_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm/frequencies/standby-mhz;-5;MHz;%.3f""}",COM1
@@ -25,7 +25,7 @@ COM1_FRQ_5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""val
 COM1_VOL_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm/volume-selected;-0.1;0;1;Volume;%.1f""}",COM1
 COM1_VOL_.1,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/instrumentation/comm/volume-selected;0.1;0;1;Volume;%.1f""}",COM1
 COM1_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/com1;1;-2;Speaker;%d""}",COM1
-COM2_FRQ_-0.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM2
+COM2_FRQ_-.025,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-0.025;MHz;%.3f""}",COM2
 COM2_FRQ_-.1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-0.1;MHz;%.3f""}",COM2
 COM2_FRQ_-1,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-1;MHz;%.3f""}",COM2
 COM2_FRQ_-5,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/instrumentation/comm[1]/frequencies/standby-mhz;-5;MHz;%.3f""}",COM2
