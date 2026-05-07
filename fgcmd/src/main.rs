@@ -36,17 +36,31 @@ struct CommandSpec {
     body: String,
 }
 
-fn command_arg() -> Result<String, String> {
+struct CliArgs {
+    command: String,
+    pretend: bool,
+}
+
+fn command_arg() -> Result<CliArgs, String> {
     let mut args = env::args().skip(1);
-    let Some(command) = args.next() else {
-        return Err("usage: fgcmd <COMMAND>".to_string());
+    let Some(first_arg) = args.next() else {
+        return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
+    };
+
+    let (pretend, command) = if first_arg == "--pretend" {
+        let Some(command) = args.next() else {
+            return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
+        };
+        (true, command)
+    } else {
+        (false, first_arg)
     };
 
     if args.next().is_some() {
-        return Err("usage: fgcmd <COMMAND>".to_string());
+        return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
     }
 
-    Ok(command)
+    Ok(CliArgs { command, pretend })
 }
 
 fn path_and_query(url: &str) -> Result<String, String> {
@@ -69,12 +83,21 @@ fn build_request_url(base_url: &str, command_url: &str) -> Result<String, String
         .map_err(|err| format!("failed to build target URL from base '{base_url}' and suffix '{suffix}': {err}"))
 }
 
-fn execute_command(spec: &CommandSpec) -> Result<(), String> {
+fn execute_command(spec: &CommandSpec, pretend: bool) -> Result<(), String> {
     let base_url = env::var(BASE_URL_ENV).unwrap_or_else(|_| DEFAULT_BASE_URL.to_string());
     let target_url = build_request_url(&base_url, &spec.url)?;
+    let body = spec.body.trim();
+
+    if pretend {
+        if body.is_empty() {
+            println!("POST {target_url} body=<empty>");
+        } else {
+            println!("POST {target_url} body={body}");
+        }
+        return Ok(());
+    }
 
     let client = reqwest::blocking::Client::new();
-    let body = spec.body.trim();
 
     let response = if body.is_empty() {
         client
@@ -146,6 +169,7 @@ fn read_env_duration(env_var: &str, default: u64) -> Duration {
 fn handle_command_with_lock(
     command: &str,
     spec: &CommandSpec,
+    pretend: bool,
 ) -> Result<(), String> {
     let lock_dir = get_lock_dir()?;
     let lock_path = get_lock_path(&lock_dir, command);
@@ -162,7 +186,7 @@ fn handle_command_with_lock(
         .map_err(|err| format!("failed to create lock file: {err}"))?;
 
     // Send initial command
-    execute_command(spec)?;
+    execute_command(spec, pretend)?;
 
     // Get timing constants from env or defaults
     let initial_delay = read_env_duration(INITIAL_DELAY_MS_ENV, DEFAULT_INITIAL_DELAY_MS);
@@ -185,7 +209,7 @@ fn handle_command_with_lock(
         }
 
         // Send command again
-        execute_command(spec)?;
+        execute_command(spec, pretend)?;
         thread::sleep(repeat_delay);
     }
 
@@ -197,23 +221,23 @@ fn handle_command_with_lock(
 fn main() {
     let lookup = build_command_lookup(COMMAND_DATA).expect("failed to parse commands.csv");
 
-    let command = match command_arg() {
-        Ok(command) => command,
+    let args = match command_arg() {
+        Ok(args) => args,
         Err(message) => {
             eprintln!("{message}");
             std::process::exit(2);
         }
     };
 
-    let spec = match lookup.get(&command) {
+    let spec = match lookup.get(&args.command) {
         Some(spec) => spec,
         None => {
-            eprintln!("unknown command: {command}");
+            eprintln!("unknown command: {}", args.command);
             std::process::exit(1);
         }
     };
 
-    if let Err(message) = handle_command_with_lock(&command, spec) {
+    if let Err(message) = handle_command_with_lock(&args.command, spec, args.pretend) {
         eprintln!("{message}");
         std::process::exit(1);
     }
