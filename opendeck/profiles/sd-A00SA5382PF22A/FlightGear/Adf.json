@@ -100,11 +100,11 @@
       "context": "Keypad.1.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_ADF",
+        "down": "fgcmd down ADF_ADF",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_ADF"
+        "up": "fgcmd up ADF_ADF"
       },
       "states": [
         {
@@ -163,11 +163,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_VOL_-.1",
+        "down": "fgcmd down ADF_VOL_-.1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_VOL_-.1"
+        "up": "fgcmd up ADF_VOL_-.1"
       },
       "states": [
         {
@@ -226,11 +226,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_VOL_.1",
+        "down": "fgcmd down ADF_VOL_.1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_VOL_.1"
+        "up": "fgcmd up ADF_VOL_.1"
       },
       "states": [
         {
@@ -289,11 +289,11 @@
       "context": "Keypad.4.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_SPKR",
+        "down": "fgcmd down ADF_SPKR",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_SPKR"
+        "up": "fgcmd up ADF_SPKR"
       },
       "states": [
         {
@@ -352,11 +352,11 @@
       "context": "Keypad.5.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_EX",
+        "down": "fgcmd down ADF_EX",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_EX"
+        "up": "fgcmd up ADF_EX"
       },
       "states": [
         {
@@ -415,11 +415,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_FRQ_-10",
+        "down": "fgcmd down ADF_FRQ_-10",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_FRQ_-10"
+        "up": "fgcmd up ADF_FRQ_-10"
       },
       "states": [
         {
@@ -478,11 +478,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_FRQ_-1",
+        "down": "fgcmd down ADF_FRQ_-1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_FRQ_-1"
+        "up": "fgcmd up ADF_FRQ_-1"
       },
       "states": [
         {
@@ -541,11 +541,11 @@
       "context": "Keypad.8.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_FRQ_1",
+        "down": "fgcmd down ADF_FRQ_1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_FRQ_1"
+        "up": "fgcmd up ADF_FRQ_1"
       },
       "states": [
         {
@@ -604,11 +604,11 @@
       "context": "Keypad.9.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_FRQ_10",
+        "down": "fgcmd down ADF_FRQ_10",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_FRQ_10"
+        "up": "fgcmd up ADF_FRQ_10"
       },
       "states": [
         {
@@ -667,11 +667,11 @@
       "context": "Keypad.10.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd ADF_BFO",
+        "down": "fgcmd down ADF_BFO",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd ADF_BFO"
+        "up": "fgcmd up ADF_BFO"
       },
       "states": [
         {

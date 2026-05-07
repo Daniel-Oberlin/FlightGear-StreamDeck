@@ -37,30 +37,53 @@ struct CommandSpec {
 }
 
 struct CliArgs {
+    action: CommandAction,
     command: String,
     pretend: bool,
+}
+
+#[derive(Clone, Copy)]
+enum CommandAction {
+    Down,
+    Up,
 }
 
 fn command_arg() -> Result<CliArgs, String> {
     let mut args = env::args().skip(1);
     let Some(first_arg) = args.next() else {
-        return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
+        return Err("usage: fgcmd [--pretend] <down|up> <COMMAND>".to_string());
     };
 
-    let (pretend, command) = if first_arg == "--pretend" {
-        let Some(command) = args.next() else {
-            return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
+    let (pretend, action_token) = if first_arg == "--pretend" {
+        let Some(action_token) = args.next() else {
+            return Err("usage: fgcmd [--pretend] <down|up> <COMMAND>".to_string());
         };
-        (true, command)
+        (true, action_token)
     } else {
         (false, first_arg)
     };
 
+    let action = if action_token.eq_ignore_ascii_case("down") {
+        CommandAction::Down
+    } else if action_token.eq_ignore_ascii_case("up") {
+        CommandAction::Up
+    } else {
+        return Err("usage: fgcmd [--pretend] <down|up> <COMMAND>".to_string());
+    };
+
+    let Some(command) = args.next() else {
+        return Err("usage: fgcmd [--pretend] <down|up> <COMMAND>".to_string());
+    };
+
     if args.next().is_some() {
-        return Err("usage: fgcmd [--pretend] <COMMAND>".to_string());
+        return Err("usage: fgcmd [--pretend] <down|up> <COMMAND>".to_string());
     }
 
-    Ok(CliArgs { command, pretend })
+    Ok(CliArgs {
+        action,
+        command,
+        pretend,
+    })
 }
 
 fn path_and_query(url: &str) -> Result<String, String> {
@@ -167,6 +190,7 @@ fn read_env_duration(env_var: &str, default: u64) -> Duration {
 }
 
 fn handle_command_with_lock(
+    action: CommandAction,
     command: &str,
     spec: &CommandSpec,
     pretend: bool,
@@ -174,14 +198,17 @@ fn handle_command_with_lock(
     let lock_dir = get_lock_dir()?;
     let lock_path = get_lock_path(&lock_dir, command);
 
-    if lock_path.exists() {
-        // Button is being released; delete lock file and exit
-        fs::remove_file(&lock_path)
-            .map_err(|err| format!("failed to delete lock file: {err}"))?;
+    if let CommandAction::Up = action {
+        // Ignore missing lock file on release.
+        match fs::remove_file(&lock_path) {
+            Ok(_) => {}
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => {}
+            Err(err) => return Err(format!("failed to delete lock file: {err}")),
+        }
         return Ok(());
     }
 
-    // Button is being pressed; create lock file and proceed
+    // Button is being pressed; create/overwrite lock file and proceed.
     fs::write(&lock_path, "")
         .map_err(|err| format!("failed to create lock file: {err}"))?;
 
@@ -237,7 +264,7 @@ fn main() {
         }
     };
 
-    if let Err(message) = handle_command_with_lock(&args.command, spec, args.pretend) {
+    if let Err(message) = handle_command_with_lock(args.action, &args.command, spec, args.pretend) {
         eprintln!("{message}");
         std::process::exit(1);
     }

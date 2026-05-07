@@ -287,11 +287,11 @@
       "context": "Keypad.5.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_PAUSE",
+        "down": "fgcmd down MAIN_PAUSE",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_PAUSE"
+        "up": "fgcmd up MAIN_PAUSE"
       },
       "states": [
         {
@@ -350,11 +350,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_LIGHTS_BRIGHTER",
+        "down": "fgcmd down MAIN_LIGHTS_BRIGHTER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_LIGHTS_BRIGHTER"
+        "up": "fgcmd up MAIN_LIGHTS_BRIGHTER"
       },
       "states": [
         {
@@ -413,11 +413,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_MIX_.02",
+        "down": "fgcmd down MAIN_MIX_.02",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_MIX_.02"
+        "up": "fgcmd up MAIN_MIX_.02"
       },
       "states": [
         {
@@ -476,11 +476,11 @@
       "context": "Keypad.8.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_ELE_.001",
+        "down": "fgcmd down MAIN_ELE_.001",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_ELE_.001"
+        "up": "fgcmd up MAIN_ELE_.001"
       },
       "states": [
         {
@@ -539,11 +539,11 @@
       "context": "Keypad.9.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_FLAPS_-.33",
+        "down": "fgcmd down MAIN_FLAPS_-.33",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_FLAPS_-.33"
+        "up": "fgcmd up MAIN_FLAPS_-.33"
       },
       "states": [
         {
@@ -603,11 +603,11 @@
       "context": "Keypad.11.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_LIGHTS_DIMMER",
+        "down": "fgcmd down MAIN_LIGHTS_DIMMER",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_LIGHTS_DIMMER"
+        "up": "fgcmd up MAIN_LIGHTS_DIMMER"
       },
       "states": [
         {
@@ -666,11 +666,11 @@
       "context": "Keypad.12.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_MIX_-.02",
+        "down": "fgcmd down MAIN_MIX_-.02",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_MIX_-.02"
+        "up": "fgcmd up MAIN_MIX_-.02"
       },
       "states": [
         {
@@ -729,11 +729,11 @@
       "context": "Keypad.13.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_ELE_-.001",
+        "down": "fgcmd down MAIN_ELE_-.001",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_ELE_-.001"
+        "up": "fgcmd up MAIN_ELE_-.001"
       },
       "states": [
         {
@@ -792,11 +792,11 @@
       "context": "Keypad.14.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd MAIN_FLAPS_.33",
+        "down": "fgcmd down MAIN_FLAPS_.33",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd MAIN_FLAPS_.33"
+        "up": "fgcmd up MAIN_FLAPS_.33"
       },
       "states": [
         {

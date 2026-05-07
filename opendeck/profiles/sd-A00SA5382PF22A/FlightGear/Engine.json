@@ -105,11 +105,11 @@
       "context": "Keypad.6.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd START_ELE_BAT",
+        "down": "fgcmd down START_ELE_BAT",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd START_ELE_BAT"
+        "up": "fgcmd up START_ELE_BAT"
       },
       "states": [
         {
@@ -168,11 +168,11 @@
       "context": "Keypad.7.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd START_ELE_ALT",
+        "down": "fgcmd down START_ELE_ALT",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd START_ELE_ALT"
+        "up": "fgcmd up START_ELE_ALT"
       },
       "states": [
         {
@@ -231,11 +231,11 @@
       "context": "Keypad.8.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd START_ELE_AVX",
+        "down": "fgcmd down START_ELE_AVX",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd START_ELE_AVX"
+        "up": "fgcmd up START_ELE_AVX"
       },
       "states": [
         {

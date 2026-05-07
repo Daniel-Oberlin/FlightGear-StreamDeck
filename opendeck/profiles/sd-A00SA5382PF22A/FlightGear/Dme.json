@@ -100,11 +100,11 @@
       "context": "Keypad.1.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd DME_NAV1",
+        "down": "fgcmd down DME_NAV1",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd DME_NAV1"
+        "up": "fgcmd up DME_NAV1"
       },
       "states": [
         {
@@ -163,11 +163,11 @@
       "context": "Keypad.2.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd DME_NAV2",
+        "down": "fgcmd down DME_NAV2",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd DME_NAV2"
+        "up": "fgcmd up DME_NAV2"
       },
       "states": [
         {
@@ -226,11 +226,11 @@
       "context": "Keypad.3.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd DME_MIN_KTS",
+        "down": "fgcmd down DME_MIN_KTS",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd DME_MIN_KTS"
+        "up": "fgcmd up DME_MIN_KTS"
       },
       "states": [
         {
@@ -289,11 +289,11 @@
       "context": "Keypad.4.0",
       "current_state": 0,
       "settings": {
-        "down": "fgcmd DME_SPKR",
+        "down": "fgcmd down DME_SPKR",
         "file": "",
         "rotate": "",
         "show": false,
-        "up": "fgcmd DME_SPKR"
+        "up": "fgcmd up DME_SPKR"
       },
       "states": [
         {
