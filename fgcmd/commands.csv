@@ -43,9 +43,9 @@ DME_NAV2,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value
 DME_SPKR,http://localhost:8080/json/sim/remote/c172/set-property-delta-modulo,"{""value"": ""/instrumentation/kma20/dme;1;-2;Speaker;%d""}",DME
 MAIN_MIX_-.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;-0.02;0;1;Mixture;%.2f""}",MAIN
 MAIN_MIX_.02,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/engines/current-engine/mixture;0.02;0;1;Mixture;%.2f""}",MAIN
-MAIN_ELE_-.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.001;Elevator trim;%.2f""}",MAIN
-MAIN_ELE_-.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.005;Elevator trim;%.2f""}",MAIN
-MAIN_ELE_ZERO,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/controls/flight/elevator-trim;0.0;Elevator trim;%.2f""}",MAIN
+MAIN_ELE_-.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.001;Elevator trim;%.3f""}",MAIN
+MAIN_ELE_-.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;-0.005;Elevator trim;%.3f""}",MAIN
+MAIN_ELE_ZERO,http://localhost:8080/json/sim/remote/c172/set-property-value,"{""value"": ""/controls/flight/elevator-trim;0.0;Elevator trim;%.3f""}",MAIN
 MAIN_ELE_.001,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.001;Elevator trim;%.3f""}",MAIN
 MAIN_ELE_.005,http://localhost:8080/json/sim/remote/c172/set-property-delta,"{""value"": ""/controls/flight/elevator-trim;0.005;Elevator trim;%.3f""}",MAIN
 MAIN_FLAPS_-.33,http://localhost:8080/json/sim/remote/c172/set-property-delta-range,"{""value"": ""/controls/flight/flaps;-0.333334;0;1;Flaps;%.1f""}",MAIN
