@@ -1,5 +1,7 @@
-var _http_control_code = func() {
-
+# Entry point called by FlightGear's add-on framework (see
+# $FG_ROOT/Docs/README.add-ons). Listeners registered here are tracked by the
+# framework and removed automatically when the add-on is unloaded or reloaded.
+var main = func(addon) {
     var autostart_trigger = "/sim/remote/c172/autostart";
     setlistener(autostart_trigger, func(n) {
         if (n.getValue() == 1) {
@@ -207,5 +209,3 @@ var _http_control_code = func() {
     }, 1);
 
 }
-
-setlistener("/sim/signals/nasal-dir-initialized", _http_control_code);

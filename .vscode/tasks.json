@@ -2,21 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Windows - Copy http-control.nas to FlightGear Nasal directory",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "copy",
-                "/Y",
-                ".\\Nasal\\http-control.nas",
-                "C:\\Users\\Daniel\\FlightGear\\Downloads\\fgdata_2024_1\\Nasal\\http-control.nas"
-            ],
-            "windows": {
-                "command": "cmd"
-            }
-        },
-        {
             "label": "Windows - Copy StreamDeck ProfilesV3 to project directory",
             "type": "shell",
             "command": "cmd",

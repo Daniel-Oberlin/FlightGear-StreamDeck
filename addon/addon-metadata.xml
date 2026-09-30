@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PropertyList>
+  <meta>
+    <file-type type="string">FlightGear add-on metadata</file-type>
+    <format-version type="int">1</format-version>
+  </meta>
+  <addon>
+    <identifier type="string">com.github.DanielOberlin.FlightGearStreamDeck</identifier>
+    <name type="string">FlightGear Stream Deck</name>
+    <version type="string">1.0.0</version>
+    <authors>
+      <author>
+        <name type="string">Daniel Oberlin</name>
+      </author>
+    </authors>
+    <short-description type="string">
+      HTTP-triggered property helpers for driving the C172P from a Stream Deck.
+    </short-description>
+    <long-description type="string">
+      Registers listeners under /sim/remote/c172/ that the fgcmd tool writes to
+      through FlightGear's built-in HTTP server. Requires --httpd=8080.
+    </long-description>
+    <min-FG-version type="string">2020.3.0</min-FG-version>
+    <max-FG-version type="string">none</max-FG-version>
+    <urls>
+      <code-repository type="string">https://github.com/Daniel-Oberlin/FlightGear-StreamDeck</code-repository>
+    </urls>
+  </addon>
+</PropertyList>
