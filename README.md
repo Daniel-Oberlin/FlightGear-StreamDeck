@@ -150,7 +150,7 @@ If you previously copied `http-control.nas` into `$FG_ROOT/Nasal`, delete that c
 
  checked 22:50
  Stream Deck: starts with FlightGear
- ↑↓ select   ⏎ launch   v VR on/off   r check now   q quit
+ ↑↓ select   ⏎ launch   v VR on/off   r check for updates   q quit
 ```
 
 - **↑/↓** select an install; the one you flew last is selected when the menu opens.
