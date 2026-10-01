@@ -1,36 +1,72 @@
 mod config;
 mod installs;
 mod process;
+mod updates;
 
 use std::fs;
 use std::os::unix::process::ExitStatusExt;
 use std::process::ExitStatus;
+use std::sync::mpsc::{self, Receiver, TryRecvError};
+use std::thread;
 use std::time::{Duration, Instant};
 
 use ratatui::crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style, Stylize};
 use ratatui::text::{Line, Span};
-use ratatui::widgets::{Block, Borders, List, ListItem, ListState, Paragraph, Wrap};
+use ratatui::widgets::{
+    Block, Borders, HighlightSpacing, List, ListItem, ListState, Paragraph, Wrap,
+};
 use ratatui::{DefaultTerminal, Frame};
 
 use config::{Config, State};
 use installs::Install;
 use process::Flight;
+use updates::{Found, Offer, OfferKind};
 
 const TICK: Duration = Duration::from_millis(250);
+const SPINNER: [char; 10] = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
 enum Mode {
     Menu,
     Flying(Flight),
 }
 
+/// One line of the menu. Only installs and offers can be selected.
+#[derive(Clone)]
+enum Row {
+    Installed(Install),
+    Offer(Offer),
+    Heading(&'static str),
+    Note(String),
+}
+
+impl Row {
+    fn selectable(&self) -> bool {
+        matches!(self, Row::Installed(_) | Row::Offer(_))
+    }
+
+    fn name(&self) -> Option<&str> {
+        match self {
+            Row::Installed(i) => Some(&i.name),
+            Row::Offer(o) => Some(&o.name),
+            _ => None,
+        }
+    }
+}
+
 struct App {
     cfg: Config,
     state: State,
     installs: Vec<Install>,
+    rows: Vec<Row>,
     list: ListState,
     mode: Mode,
+    /// Last update check, possibly from the cache.
+    found: Option<Found>,
+    /// A background update check in progress.
+    checking: Option<Receiver<Found>>,
+    spinner: usize,
     /// Last outcome to show under the menu, and whether it is an error.
     message: Option<(String, bool)>,
     /// Asked "stop FlightGear?" and waiting for y/n.
@@ -42,35 +78,98 @@ struct App {
 impl App {
     fn new(cfg: Config) -> App {
         let state = State::load();
+        let found = Found::load_cached();
         let mut app = App {
             cfg,
             state,
             installs: Vec::new(),
+            rows: Vec::new(),
             list: ListState::default(),
             mode: Mode::Menu,
+            found,
+            checking: None,
+            spinner: 0,
             message: None,
             confirm_stop: false,
             log_warning: false,
             quit: false,
         };
         app.rescan();
-        let last = app.state.last_flown.clone();
-        let index = last.and_then(|name| app.installs.iter().position(|i| i.name == name));
-        app.list.select(index.or(if app.installs.is_empty() {
-            None
-        } else {
-            Some(0)
-        }));
+        if let Some(last) = app.state.last_flown.clone() {
+            app.select_name(&last);
+        }
+        if app.found.as_ref().is_none_or(Found::is_stale) {
+            app.start_check();
+        }
         app
     }
 
+    /// Re-read installs and rebuild the rows, keeping the same item selected if it still exists.
     fn rescan(&mut self) {
+        let selected = self.selected().and_then(|r| r.name().map(str::to_string));
         self.installs = installs::scan(&self.cfg.installs_dir());
-        if let Some(i) = self.list.selected()
-            && i >= self.installs.len()
-        {
-            self.list.select(self.installs.len().checked_sub(1));
+
+        let mut rows: Vec<Row> = self.installs.iter().cloned().map(Row::Installed).collect();
+        if rows.is_empty() {
+            rows.push(Row::Note("Nothing installed yet.".into()));
         }
+        let offers = self
+            .found
+            .as_ref()
+            .map(|f| f.offers_for(&self.installs))
+            .unwrap_or_default();
+        if !offers.is_empty() {
+            rows.push(Row::Heading("available"));
+            rows.extend(offers.into_iter().map(Row::Offer));
+        }
+        self.rows = rows;
+
+        self.list.select(None);
+        if let Some(name) = selected {
+            self.select_name(&name);
+        }
+        if self.list.selected().is_none() {
+            self.list.select(self.rows.iter().position(Row::selectable));
+        }
+    }
+
+    fn select_name(&mut self, name: &str) {
+        if let Some(i) = self.rows.iter().position(|r| r.name() == Some(name)) {
+            self.list.select(Some(i));
+        }
+    }
+
+    fn selected(&self) -> Option<&Row> {
+        self.list.selected().and_then(|i| self.rows.get(i))
+    }
+
+    /// Move to the next selectable row up (-1) or down (+1), skipping headings.
+    fn step(&mut self, delta: isize) {
+        let Some(mut i) = self.list.selected() else {
+            return;
+        };
+        loop {
+            match i.checked_add_signed(delta) {
+                Some(next) if next < self.rows.len() => i = next,
+                _ => return,
+            }
+            if self.rows[i].selectable() {
+                self.list.select(Some(i));
+                return;
+            }
+        }
+    }
+
+    fn start_check(&mut self) {
+        if self.checking.is_some() {
+            return;
+        }
+        let (tx, rx) = mpsc::channel();
+        let previous = self.found.clone();
+        thread::spawn(move || {
+            let _ = tx.send(updates::check(previous.as_ref()));
+        });
+        self.checking = Some(rx);
     }
 
     fn on_key(&mut self, key: KeyEvent) {
@@ -80,20 +179,23 @@ impl App {
             Mode::Menu => match key.code {
                 KeyCode::Char('q') | KeyCode::Esc => self.quit = true,
                 _ if ctrl_c => self.quit = true,
-                KeyCode::Up | KeyCode::Char('k') => self.list.select_previous(),
-                KeyCode::Down | KeyCode::Char('j')
-                    if self
-                        .list
-                        .selected()
-                        .is_some_and(|i| i + 1 < self.installs.len()) =>
-                {
-                    self.list.select_next();
-                }
+                KeyCode::Up | KeyCode::Char('k') => self.step(-1),
+                KeyCode::Down | KeyCode::Char('j') => self.step(1),
                 KeyCode::Char('v') => {
                     self.state.vr = !self.state.vr;
                     self.state.save();
                 }
-                KeyCode::Enter => self.launch(),
+                KeyCode::Char('r') => self.start_check(),
+                KeyCode::Enter => match self.selected().cloned() {
+                    Some(Row::Installed(install)) => self.launch(install),
+                    Some(Row::Offer(offer)) => {
+                        self.message = Some((
+                            format!("Installing {} isn't available yet.", offer.name),
+                            false,
+                        ));
+                    }
+                    _ => {}
+                },
                 _ => {}
             },
             Mode::Flying(_) if self.confirm_stop => match key.code {
@@ -114,15 +216,7 @@ impl App {
         }
     }
 
-    fn launch(&mut self) {
-        let Some(install) = self
-            .list
-            .selected()
-            .and_then(|i| self.installs.get(i))
-            .cloned()
-        else {
-            return;
-        };
+    fn launch(&mut self, install: Install) {
         if process::flightgear_running() {
             self.message = Some((
                 "FlightGear is already running; close it first.".into(),
@@ -166,8 +260,22 @@ impl App {
         }
     }
 
-    /// Called every tick: notice FlightGear exiting and watch its log size.
+    /// Called every tick: collect update results, notice FlightGear exiting, watch its log.
     fn on_tick(&mut self) {
+        self.spinner = self.spinner.wrapping_add(1);
+        if let Some(rx) = &self.checking {
+            match rx.try_recv() {
+                Ok(found) => {
+                    found.save();
+                    self.found = Some(found);
+                    self.checking = None;
+                    self.rescan();
+                }
+                Err(TryRecvError::Disconnected) => self.checking = None,
+                Err(TryRecvError::Empty) => {}
+            }
+        }
+
         let Mode::Flying(flight) = &mut self.mode else {
             return;
         };
@@ -224,7 +332,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
     let [header, body, status, footer] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Min(3),
-        Constraint::Length(3),
+        Constraint::Length(4),
         Constraint::Length(1),
     ])
     .areas(frame.area());
@@ -257,25 +365,29 @@ fn draw_header(frame: &mut Frame, area: Rect, app: &App) {
 }
 
 fn draw_menu(frame: &mut Frame, area: Rect, app: &mut App) {
-    let block = Block::new().borders(Borders::TOP).title(" installed ");
-    if app.installs.is_empty() {
-        let text = format!(
-            "Nothing installed yet.\nInstalls are looked for in {}",
-            app.cfg.installs_dir().display()
-        );
-        frame.render_widget(Paragraph::new(text).block(block).dim(), area);
-        return;
-    }
+    let last_flown = app.state.last_flown.as_deref();
     let items: Vec<ListItem> = app
-        .installs
+        .rows
         .iter()
-        .map(|install| {
+        .map(|row| ListItem::new(row_line(row, last_flown)))
+        .collect();
+    let list = List::new(items)
+        .block(Block::new().borders(Borders::TOP).title(" installed "))
+        // An ASCII marker, with its space kept on every row: some terminals draw
+        // symbols like ▶ two cells wide, which shifted the selected row.
+        .highlight_symbol("> ")
+        .highlight_spacing(HighlightSpacing::Always)
+        .highlight_style(Style::new().add_modifier(Modifier::REVERSED));
+    frame.render_stateful_widget(list, area, &mut app.list);
+}
+
+fn row_line<'a>(row: &'a Row, last_flown: Option<&str>) -> Line<'a> {
+    let kind = |label: &str| Span::styled(format!("{label:<9}"), Style::new().fg(Color::Cyan));
+    match row {
+        Row::Installed(install) => {
             let mut spans = vec![
                 Span::raw(format!("{:<16}", install.name)),
-                Span::styled(
-                    format!("{:<9}", install.kind.label()),
-                    Style::new().fg(Color::Cyan),
-                ),
+                kind(install.kind.label()),
             ];
             if let Some(version) = install
                 .data_version
@@ -287,17 +399,40 @@ fn draw_menu(frame: &mut Frame, area: Rect, app: &mut App) {
                     Style::new().dim(),
                 ));
             }
-            if app.state.last_flown.as_deref() == Some(install.name.as_str()) {
+            if last_flown == Some(install.name.as_str()) {
                 spans.push(Span::styled("last flown", Style::new().fg(Color::Yellow)));
             }
-            ListItem::new(Line::from(spans))
-        })
-        .collect();
-    let list = List::new(items)
-        .block(block)
-        .highlight_symbol("▶ ")
-        .highlight_style(Style::new().add_modifier(Modifier::REVERSED));
-    frame.render_stateful_widget(list, area, &mut app.list);
+            Line::from(spans)
+        }
+        Row::Offer(offer) => {
+            let label = match offer.kind {
+                OfferKind::Stable { .. } => "stable",
+                OfferKind::Nightly { .. } => "nightly",
+            };
+            let mut spans = vec![
+                Span::raw(format!("{:<16}", offer.name)),
+                kind(label),
+                Span::styled("install", Style::new().fg(Color::Green)),
+            ];
+            if let Some(size) = offer.size {
+                spans.push(Span::styled(
+                    format!("  {:.1} GB", size as f64 / 1e9),
+                    Style::new().dim(),
+                ));
+            }
+            if let OfferKind::Nightly { .. } = offer.kind {
+                // The size is the AppImage alone; its data comes from the fgdata git repository.
+                spans.push(Span::styled(" + fgdata", Style::new().dim()));
+                spans.push(Span::styled(
+                    "  experimental",
+                    Style::new().fg(Color::Yellow),
+                ));
+            }
+            Line::from(spans)
+        }
+        Row::Heading(title) => Line::styled(format!("-- {title} "), Style::new().dim()),
+        Row::Note(text) => Line::styled(text.as_str(), Style::new().dim()),
+    }
 }
 
 fn draw_flying(frame: &mut Frame, area: Rect, flight: &Flight) {
@@ -343,6 +478,7 @@ fn draw_status(frame: &mut Frame, area: Rect, app: &App) {
         let color = if *is_error { Color::Red } else { Color::Green };
         lines.push(Line::styled(text.as_str(), Style::new().fg(color)));
     }
+    lines.push(Line::styled(update_status(app), Style::new().dim()));
     let deck = match (&app.mode, &app.cfg.opendeck) {
         (
             Mode::Flying(Flight {
@@ -358,17 +494,62 @@ fn draw_status(frame: &mut Frame, area: Rect, app: &App) {
     frame.render_widget(Paragraph::new(lines).wrap(Wrap { trim: true }), area);
 }
 
+fn update_status(app: &App) -> String {
+    if app.checking.is_some() {
+        return format!(
+            "{} checking for new versions...",
+            SPINNER[app.spinner % SPINNER.len()]
+        );
+    }
+    let Some(found) = &app.found else {
+        return "Not checked for new versions yet.".into();
+    };
+    let when = local_time(found.checked_at);
+    match found.errors.len() {
+        0 => format!("checked {when}"),
+        // Both sources failed; usually offline.
+        2 => format!(
+            "couldn't check for new versions ({}), showing results from {when}",
+            found.errors[0].split(": ").last().unwrap_or("unreachable")
+        ),
+        _ => format!("checked {when}; couldn't reach {}", found.errors.join("; ")),
+    }
+}
+
+/// "14:05" today, "Sep 30 14:05" otherwise.
+fn local_time(unix: u64) -> String {
+    let format = |secs: u64| -> Option<libc::tm> {
+        let t = secs as libc::time_t;
+        let mut tm: libc::tm = unsafe { std::mem::zeroed() };
+        let ok = unsafe { !libc::localtime_r(&t, &mut tm).is_null() };
+        ok.then_some(tm)
+    };
+    let (Some(then), Some(today)) = (format(unix), format(updates::now())) else {
+        return "?".into();
+    };
+    let time = format!("{:02}:{:02}", then.tm_hour, then.tm_min);
+    if (then.tm_year, then.tm_yday) == (today.tm_year, today.tm_yday) {
+        return time;
+    }
+    const MONTHS: [&str; 12] = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+    let month = MONTHS.get(then.tm_mon as usize).unwrap_or(&"?");
+    format!("{month} {} {time}", then.tm_mday)
+}
+
 fn draw_footer(frame: &mut Frame, area: Rect, app: &App) {
-    let launch = if app.state.vr {
-        "launch in VR"
-    } else {
-        "launch"
+    let enter = match app.selected() {
+        Some(Row::Offer(_)) => "install",
+        _ if app.state.vr => "launch in VR",
+        _ => "launch",
     };
     let keys: &[(&str, &str)] = match app.mode {
         Mode::Menu => &[
             ("↑↓", "select"),
-            ("⏎", launch),
+            ("⏎", enter),
             ("v", "VR on/off"),
+            ("r", "check now"),
             ("q", "quit"),
         ],
         Mode::Flying(_) => &[("s", "stop FlightGear")],

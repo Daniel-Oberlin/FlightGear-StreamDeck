@@ -141,16 +141,20 @@ If you previously copied `http-control.nas` into `$FG_ROOT/Nasal`, delete that c
 `fglaunch` is a terminal menu for several FlightGear versions installed side by side, each with matching data. Run it with no arguments:
 
 ```text
- FlightGear                                        VR ○ OFF
- installed ────────────────────────────────────────────────
-▶ 2024.1.7        stable   last flown
+ FlightGear                                              VR ○ OFF
+ installed ──────────────────────────────────────────────────────
+> 2024.1.7        stable   last flown
   2024.1.5        stable
+  -- available
+  next-20260930   nightly  install  0.4 GB + fgdata  experimental
 
+ checked 22:50
  Stream Deck: starts with FlightGear
- ↑↓ select   ⏎ launch   v VR on/off   q quit
+ ↑↓ select   ⏎ launch   v VR on/off   r check now   q quit
 ```
 
 - **↑/↓** select an install; the one you flew last is selected when the menu opens.
+- **r** checks for new versions now (see below).
 - **v** toggles VR. The badge in the corner shows the mode, and the Enter hint changes to *launch in VR*.
 - **Enter** launches the selected install. FlightGear's own launcher window still opens for choosing the aircraft and airport.
 - While FlightGear runs, the menu shows how long you've been flying. **s** stops FlightGear after confirming. When FlightGear exits, the menu comes back and shows how it exited.
@@ -164,6 +168,15 @@ For each launch, `fglaunch`:
 - adds `--fg-aircraft` for the install's `aircraft/` folder, if there is one;
 - in VR mode, adds `--enable-vr` and sets `XR_RUNTIME_JSON`;
 - sends FlightGear's console output to `home/launch.log` so it can't draw over the menu, and warns if `home/fgfs.log` grows past 1 GB, which usually means FlightGear is stuck in a crash loop.
+
+### New Versions
+
+While the menu is open, `fglaunch` checks in the background for versions you don't have, and lists them under *available*:
+
+- **Stable releases** from the FlightGear download mirror: those newer than your newest installed stable release, or just the newest release if none is installed.
+- **Nightly builds** of FlightGear's development branch (`next`) from GitLab CI: the latest nightly, if it is newer than any nightly you have. GitLab keeps nightly builds for 30 days.
+
+Results are cached in `~/.cache/fglaunch/updates.json` and refreshed when they are more than 6 hours old, or when you press **r**. If the servers can't be reached, the last results stay listed.
 
 Only one FlightGear can run at a time, because they would share the HTTP port and the scenery folder; `fglaunch` refuses to start a second one.
 
