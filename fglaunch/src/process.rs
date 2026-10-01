@@ -75,14 +75,23 @@ fn link_joysticks(cfg: &Config, home: &Path) -> Result<(), String> {
 }
 
 pub fn start_opendeck(appimage: &Path) -> Result<Child, String> {
-    Command::new(appimage)
-        .arg("--hide")
+    let mut cmd = Command::new(appimage);
+    cmd.arg("--hide")
         .current_dir(appimage.parent().unwrap_or(Path::new("/")))
         .stdin(Stdio::null())
         .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .process_group(0)
-        .spawn()
+        .stderr(Stdio::null());
+    // OpenDeck stalls during startup when it is attached to the menu's terminal, so
+    // give it its own session. That also makes it its own process group for stopping.
+    unsafe {
+        cmd.pre_exec(|| {
+            if libc::setsid() == -1 {
+                return Err(std::io::Error::last_os_error());
+            }
+            Ok(())
+        });
+    }
+    cmd.spawn()
         .map_err(|err| format!("could not start OpenDeck: {err}"))
 }
 
