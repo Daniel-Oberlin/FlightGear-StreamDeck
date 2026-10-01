@@ -20,12 +20,13 @@ One design change during that migration was especially important. The original E
 
 To support that behavior, I wrote [fgcmd/src/main.rs](fgcmd/src/main.rs), a small Rust command-line tool named `fgcmd`. It reads commands from [fgcmd/commands.csv](fgcmd/commands.csv), supports key-down and key-up actions, and uses a lock file to coordinate the repeat behavior. This also cleanly separates the HTTP URLs and request bodies from profile design, which makes the Open Deck configuration easier to maintain.
 
-Originally, the Nasal script had to be copied into FlightGear's own `$FG_ROOT/Nasal` directory, which meant modifying the FlightGear installation and redoing the copy after every upgrade. It is now packaged as a FlightGear add-on, which FlightGear loads directly from this repository with `--addon`. The launch scripts in [launch](launch) pass that option along with the HTTP server setting, so the whole setup is recorded in one place.
+Originally, the Nasal script had to be copied into FlightGear's own `$FG_ROOT/Nasal` directory, which meant modifying the FlightGear installation and redoing the copy after every upgrade. It is now packaged as a FlightGear add-on, which FlightGear loads directly from this repository with `--addon`. The [fglaunch](launch/fglaunch) launcher passes that option along with the HTTP server setting, so the whole setup is recorded in one place.
 
 ## What Is In This Repository
 
 - [addon](addon): FlightGear add-on. [addon/addon-main.nas](addon/addon-main.nas) exposes custom triggerable properties and simulator actions.
-- [launch](launch): Shell scripts that start FlightGear with the HTTP server and the add-on enabled.
+- [launch/fglaunch](launch/fglaunch): Launcher for side-by-side FlightGear installs, with the HTTP server and the add-on enabled.
+- [config/Input/Joysticks](config/Input/Joysticks): Yoke and pedal bindings shared by all installs.
 - [fgcmd/commands.csv](fgcmd/commands.csv): CSV command catalog mapping command names to HTTP URL paths and optional request bodies.
 - [fgcmd/src/main.rs](fgcmd/src/main.rs): Rust implementation of `fgcmd`, including command lookup, HTTP dispatch, and hold-to-repeat behavior.
 - [Elgato/StreamDeck](Elgato/StreamDeck): Stream Deck profile assets from the original Windows-based implementation.
@@ -135,17 +136,48 @@ To confirm that the add-on loaded, look in FlightGear's log (`~/.fgfs/fgfs.log` 
 
 If you previously copied `http-control.nas` into `$FG_ROOT/Nasal`, delete that copy. Otherwise every command is handled twice: adjustments double and toggles cancel themselves out.
 
-## Launch Scripts
+## Launching FlightGear: Side-by-Side Installs
 
-[launch/fg.sh](launch/fg.sh) (desktop) and [launch/fgvr.sh](launch/fgvr.sh) (VR) start the FlightGear launcher with `--httpd=8080` and `--addon` already set. Setting these in the scripts, rather than in the launcher's *Additional Settings* box, keeps them in effect across FlightGear upgrades, because the launcher saves its settings separately for each FlightGear version.
-
-The scripts find the add-on relative to their own location, so they can be symlinked from anywhere, for example:
+[launch/fglaunch](launch/fglaunch) runs several FlightGear versions side by side, each with matching data, and starts any of them with a named configuration:
 
 ```bash
-ln -s ~/Development/FlightGear-StreamDeck/launch/fg.sh ~/flightgear/fg.sh
+fglaunch 2024.1.7            # desktop configuration (the default)
+fglaunch 2024.1.5 vr
+fglaunch 2024.1.7 desktop --airport=KSFO   # extra fgfs options pass through
 ```
 
-They expect an `fgfs` executable on your `PATH`. I keep `fgfs` as a symlink to the FlightGear AppImage I'm currently using, which makes it easy to switch versions. `fgvr.sh` also sets `XR_RUNTIME_JSON` for my WiVRn install; change or remove that line for your own VR runtime.
+Run it with no arguments to list the available installs and configurations.
+
+Each install is a folder under `$FG_BASE/installs/` (default `/mnt/nocow/doberlin/flightgear`, a btrfs subvolume left out of snapshots so the large data isn't snapshotted):
+
+```text
+installs/<version>/
+  fgfs       symlink to the FlightGear AppImage to run
+  fgdata/    the FGData release matching that AppImage
+  home/      FG_HOME for this install (created on first launch)
+  aircraft/  optional extra aircraft not in that version's catalog
+shared/TerraSync/   scenery, shared by every install
+```
+
+For each launch, `fglaunch`:
+
+- sets `FG_HOME` and `--fg-root` for the chosen install, so versions never share settings or data;
+- points `--terrasync-dir` at the shared scenery, which works with every version (it's selected by scenery service, not FlightGear version);
+- adds `--httpd=8080` and `--addon` for this repository's add-on. Setting these here, rather than in the launcher's *Additional Settings* box, keeps them in effect for every version, because the launcher saves its settings separately for each FlightGear version;
+- adds `--fg-aircraft` for the install's `aircraft/` folder, if there is one;
+- applies the configuration: `desktop` or `vr` (which sets `XR_RUNTIME_JSON` for my WiVRn install; change it for your own VR runtime).
+
+To add a version, create its folder, extract that release's data package into `fgdata/` (for example `FlightGear-2024.1.7-data.txz` from the FlightGear download mirror), and link `fgfs` to its AppImage.
+
+`fglaunch` finds the repository relative to its own location, so it can be symlinked onto your `PATH`:
+
+```bash
+ln -s ~/Development/FlightGear-StreamDeck/launch/fglaunch ~/flightgear/fglaunch
+```
+
+### Shared Joystick Configuration
+
+My yoke and pedal bindings are in [config/Input/Joysticks](config/Input/Joysticks). On first launch, `fglaunch` links each install's `home/Input/Joysticks` to that folder, so every version uses the same calibration. Saving from FlightGear's Joystick Configuration dialog writes through the link into the repository, where the change can be reviewed and committed.
 
 ## VS Code Copy Tasks
 
@@ -160,7 +192,8 @@ These tasks are configured with machine-specific paths from my development envir
 
 - [fgcmd](fgcmd): Rust command dispatcher and CSV command catalog.
 - [addon](addon): FlightGear add-on with the Nasal support code.
-- [launch](launch): FlightGear launch scripts.
+- [launch](launch): `fglaunch`, the side-by-side FlightGear launcher.
+- [config](config): Shared FlightGear configuration (joystick bindings).
 - [Elgato/StreamDeck](Elgato/StreamDeck): Original Stream Deck profiles and icon assets.
 - [opendeck](opendeck): Current Open Deck profiles and images.
 
@@ -172,7 +205,7 @@ These tasks are configured with machine-specific paths from my development envir
 ## Notes
 
 - `fgcmd` embeds [fgcmd/commands.csv](fgcmd/commands.csv) at compile time, so rebuild after changing that file.
-- If you are setting this up on a different machine, expect to adjust copy paths and application locations in the VS Code tasks and launch scripts.
+- If you are setting this up on a different machine, expect to adjust copy paths and application locations in the VS Code tasks and in `fglaunch` (`FG_BASE` and the VR runtime path).
 
 ## License
 

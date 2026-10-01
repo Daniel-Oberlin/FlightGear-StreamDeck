@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <name type="string">CH PRODUCTS CH PRO PEDALS USB </name>
+  <axis>
+    <desc type="string">Brake Left</desc>
+    <binding>
+      <command type="string">property-scale</command>
+      <property type="string">/controls/gear/brake-left</property>
+      <factor type="double">0.5</factor>
+      <offset type="double">1</offset>
+      <power type="double">1</power>
+    </binding>
+  </axis>
+  <axis n="1">
+    <desc type="string">Brake Right</desc>
+    <binding>
+      <command type="string">property-scale</command>
+      <property type="string">/controls/gear/brake-right</property>
+      <factor type="double">0.5</factor>
+      <offset type="double">1</offset>
+      <power type="double">1</power>
+    </binding>
+  </axis>
+  <axis n="2">
+    <desc type="string">Rudder</desc>
+    <binding>
+      <command type="string">property-scale</command>
+      <property type="string">/controls/flight/rudder</property>
+      <factor type="double">1</factor>
+      <offset type="double">0</offset>
+      <power type="string">2</power>
+    </binding>
+  </axis>
+</PropertyList>
