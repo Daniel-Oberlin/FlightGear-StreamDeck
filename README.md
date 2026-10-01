@@ -154,6 +154,8 @@ If you previously copied `http-control.nas` into `$FG_ROOT/Nasal`, delete that c
 ```
 
 - **↑/↓** select an install; the one you flew last is selected when the menu opens.
+- **Enter** on an *available* version installs it, with a progress bar in the status line. The menu stays usable meanwhile, including launching; quitting asks first, then cancels and cleans up.
+- **d** removes the selected install after confirming. Shared scenery, joystick bindings, fgdata and aircraft are never removed.
 - **r** checks for new versions now (see below).
 - **v** toggles VR. The badge in the corner shows the mode, and the Enter hint changes to *launch in VR*.
 - **Enter** launches the selected install. FlightGear's own launcher window still opens for choosing the aircraft and airport.
@@ -176,6 +178,12 @@ While the menu is open, `fglaunch` checks in the background for versions you don
 - **Stable releases** from the FlightGear download mirror: those newer than your newest installed stable release, or just the newest release if none is installed.
 - **Nightly builds** of FlightGear's development branch (`next`) from GitLab CI: the latest nightly, if it is newer than any nightly you have. GitLab keeps nightly builds for 30 days.
 
+Installing builds the version in its final `installs/` folder and creates the `fgfs` link last, so a failed or cancelled install never appears in the menu; its folder is removed instead.
+
+- **Stable:** downloads the AppImage and the data package (checking each against the size the server reports), extracts the data, checks its version file, and deletes the package.
+- **Nightly:** downloads the AppImage. FGData comes from one shared, shallow clone of FGData's `next` branch (`shared/fgdata.git`); each nightly gets a git worktree of it at the last commit before its build started, because the nightly build uses the tip of `next` at that time. The C172P, which isn't part of `next`, is one shared clone in `shared/aircraft/c172p`, linked as the install's `aircraft/` folder and updated with each nightly installed.
+- **Home folder:** launcher settings are copied from your most recent install of the same release series, without paths into that install, and saved aircraft state (`aircraft-data/`) from the install you flew last.
+
 Results are cached in `~/.cache/fglaunch/updates.json` and refreshed when they are more than 6 hours old, or when you press **r**. If the servers can't be reached, the last results stay listed.
 
 Only one FlightGear can run at a time, because they would share the HTTP port and the scenery folder; `fglaunch` refuses to start a second one.
@@ -191,9 +199,11 @@ installs/<version>/
   home/      FG_HOME for this install (created on first launch)
   aircraft/  optional extra aircraft not in that version's catalog
 shared/TerraSync/   scenery, shared by every install
+shared/fgdata.git/  FGData repository for nightlies (one worktree per nightly)
+shared/aircraft/    aircraft shared by nightlies (the C172P)
 ```
 
-To add a version by hand, create its folder, extract that release's data package into `fgdata/` (for example `FlightGear-2024.1.7-data.txz` from the FlightGear download mirror), and link `fgfs` to its AppImage. Folders whose name starts with `next` are listed as nightlies.
+Versions are normally installed from the menu. To add one by hand, create its folder, extract that release's data package into `fgdata/` (for example `FlightGear-2024.1.7-data.txz` from the FlightGear download mirror), and link `fgfs` to its AppImage. Folders whose name starts with `next` are listed as nightlies.
 
 ### Configuration
 

@@ -1,4 +1,5 @@
 mod config;
+mod install;
 mod installs;
 mod process;
 mod updates;
@@ -20,6 +21,7 @@ use ratatui::widgets::{
 use ratatui::{DefaultTerminal, Frame};
 
 use config::{Config, State};
+use install::{Cancel, Job, Progress};
 use installs::Install;
 use process::Flight;
 use updates::{Found, Offer, OfferKind};
@@ -55,6 +57,22 @@ impl Row {
     }
 }
 
+/// An install or removal running in the background. One at a time.
+struct Task {
+    what: String,
+    step: String,
+    bytes: Option<(u64, u64)>,
+    progress: Receiver<Progress>,
+    cancel: Cancel,
+}
+
+/// A question waiting for y/n.
+enum Confirm {
+    StopFlightGear,
+    Remove(Install),
+    CancelTaskAndQuit,
+}
+
 struct App {
     cfg: Config,
     state: State,
@@ -67,11 +85,13 @@ struct App {
     /// A background update check in progress.
     checking: Option<Receiver<Found>>,
     spinner: usize,
+    task: Option<Task>,
     /// Last outcome to show under the menu, and whether it is an error.
     message: Option<(String, bool)>,
-    /// Asked "stop FlightGear?" and waiting for y/n.
-    confirm_stop: bool,
+    confirm: Option<Confirm>,
     log_warning: bool,
+    /// Quit once the cancelled task has cleaned up.
+    quit_after_task: bool,
     quit: bool,
 }
 
@@ -89,9 +109,11 @@ impl App {
             found,
             checking: None,
             spinner: 0,
+            task: None,
             message: None,
-            confirm_stop: false,
+            confirm: None,
             log_warning: false,
+            quit_after_task: false,
             quit: false,
         };
         app.rescan();
@@ -175,10 +197,19 @@ impl App {
     fn on_key(&mut self, key: KeyEvent) {
         let ctrl_c =
             key.modifiers.contains(KeyModifiers::CONTROL) && key.code == KeyCode::Char('c');
+        if let Some(confirm) = self.confirm.take() {
+            if key.code == KeyCode::Char('y') {
+                self.confirmed(confirm);
+            }
+            return;
+        }
+        let quit_key = matches!(key.code, KeyCode::Char('q') | KeyCode::Esc) || ctrl_c;
         match &self.mode {
             Mode::Menu => match key.code {
-                KeyCode::Char('q') | KeyCode::Esc => self.quit = true,
-                _ if ctrl_c => self.quit = true,
+                _ if quit_key && self.task.is_some() => {
+                    self.confirm = Some(Confirm::CancelTaskAndQuit);
+                }
+                _ if quit_key => self.quit = true,
                 KeyCode::Up | KeyCode::Char('k') => self.step(-1),
                 KeyCode::Down | KeyCode::Char('j') => self.step(1),
                 KeyCode::Char('v') => {
@@ -186,34 +217,88 @@ impl App {
                     self.state.save();
                 }
                 KeyCode::Char('r') => self.start_check(),
+                KeyCode::Char('d') => {
+                    if let Some(Row::Installed(install)) = self.selected().cloned()
+                        && self.task_slot_free()
+                    {
+                        self.confirm = Some(Confirm::Remove(install));
+                    }
+                }
                 KeyCode::Enter => match self.selected().cloned() {
                     Some(Row::Installed(install)) => self.launch(install),
-                    Some(Row::Offer(offer)) => {
-                        self.message = Some((
-                            format!("Installing {} isn't available yet.", offer.name),
-                            false,
-                        ));
-                    }
+                    Some(Row::Offer(offer)) => self.start_install(offer),
                     _ => {}
                 },
                 _ => {}
             },
-            Mode::Flying(_) if self.confirm_stop => match key.code {
-                KeyCode::Char('y') => {
-                    self.confirm_stop = false;
-                    if let Mode::Flying(flight) = &mut self.mode {
-                        flight.stop_requested = true;
-                        process::signal_group(&flight.child, libc::SIGTERM);
-                    }
-                }
-                _ => self.confirm_stop = false,
-            },
             Mode::Flying(_) => {
                 if key.code == KeyCode::Char('s') || ctrl_c {
-                    self.confirm_stop = true;
+                    self.confirm = Some(Confirm::StopFlightGear);
                 }
             }
         }
+    }
+
+    fn confirmed(&mut self, confirm: Confirm) {
+        match confirm {
+            Confirm::StopFlightGear => {
+                if let Mode::Flying(flight) = &mut self.mode {
+                    flight.stop_requested = true;
+                    process::signal_group(&flight.child, libc::SIGTERM);
+                }
+            }
+            Confirm::Remove(install) => {
+                if process::flightgear_running() {
+                    self.message =
+                        Some(("Close FlightGear before removing an install.".into(), true));
+                    return;
+                }
+                let what = format!("Removing {}", install.name);
+                self.start_task(what, move |job| install::remove(job, install));
+            }
+            Confirm::CancelTaskAndQuit => {
+                if let Some(task) = &mut self.task {
+                    task.cancel.cancel();
+                    task.step = "cancelling and cleaning up".into();
+                    task.bytes = None;
+                    self.quit_after_task = true;
+                } else {
+                    self.quit = true;
+                }
+            }
+        }
+    }
+
+    /// Only one install or removal at a time; says so if one is running.
+    fn task_slot_free(&mut self) -> bool {
+        if let Some(task) = &self.task {
+            self.message = Some((format!("Wait for: {}", task.what), true));
+            return false;
+        }
+        true
+    }
+
+    fn start_install(&mut self, offer: Offer) {
+        if !self.task_slot_free() {
+            return;
+        }
+        let what = format!("Installing {}", offer.name);
+        self.start_task(what, move |job| install::install(job, offer));
+    }
+
+    fn start_task(&mut self, what: String, work: impl FnOnce(Job) + Send + 'static) {
+        let (tx, rx) = mpsc::channel();
+        let job = Job::new(&self.cfg, &self.installs, self.state.last_flown.clone(), tx);
+        let cancel = job.cancel.clone();
+        thread::spawn(move || work(job));
+        self.message = None;
+        self.task = Some(Task {
+            what,
+            step: "starting".into(),
+            bytes: None,
+            progress: rx,
+            cancel,
+        });
     }
 
     fn launch(&mut self, install: Install) {
@@ -260,6 +345,41 @@ impl App {
         }
     }
 
+    /// Apply progress from the running install or removal.
+    fn poll_task(&mut self) {
+        let Some(task) = &mut self.task else {
+            return;
+        };
+        loop {
+            match task.progress.try_recv() {
+                Ok(Progress::Step(step)) => {
+                    if !self.quit_after_task {
+                        task.step = step;
+                        task.bytes = None;
+                    }
+                }
+                Ok(Progress::Bytes(done, total)) => task.bytes = Some((done, total)),
+                Ok(Progress::Done(result)) => {
+                    self.message = Some(match result {
+                        Ok(text) => (text, false),
+                        Err(err) => (format!("{} failed: {err}", task.what), true),
+                    });
+                    break;
+                }
+                Err(TryRecvError::Empty) => return,
+                Err(TryRecvError::Disconnected) => {
+                    self.message = Some((format!("{} stopped unexpectedly.", task.what), true));
+                    break;
+                }
+            }
+        }
+        self.task = None;
+        if self.quit_after_task {
+            self.quit = true;
+        }
+        self.rescan();
+    }
+
     /// Called every tick: collect update results, notice FlightGear exiting, watch its log.
     fn on_tick(&mut self) {
         self.spinner = self.spinner.wrapping_add(1);
@@ -275,6 +395,7 @@ impl App {
                 Err(TryRecvError::Empty) => {}
             }
         }
+        self.poll_task();
 
         let Mode::Flying(flight) = &mut self.mode else {
             return;
@@ -297,7 +418,9 @@ impl App {
         if let Some(opendeck) = flight.opendeck.take() {
             process::stop_group_in_background(opendeck);
         }
-        self.confirm_stop = false;
+        if matches!(self.confirm, Some(Confirm::StopFlightGear)) {
+            self.confirm = None;
+        }
         self.log_warning = false;
         self.message = Some(exit_message(&flight, status));
         self.rescan();
@@ -332,7 +455,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
     let [header, body, status, footer] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Min(3),
-        Constraint::Length(4),
+        Constraint::Length(5),
         Constraint::Length(1),
     ])
     .areas(frame.area());
@@ -468,11 +591,22 @@ fn draw_status(frame: &mut Frame, area: Rect, app: &App) {
             Style::new().fg(Color::Red).bold(),
         ));
     }
-    if app.confirm_stop {
+    if let Some(confirm) = &app.confirm {
+        let question = match confirm {
+            Confirm::StopFlightGear => "Stop FlightGear? y/n".to_string(),
+            Confirm::Remove(install) => format!(
+                "Remove {} with its settings and saved aircraft state? Shared files are kept. y/n",
+                install.name
+            ),
+            Confirm::CancelTaskAndQuit => "Cancel the running task and quit? y/n".to_string(),
+        };
         lines.push(Line::styled(
-            "Stop FlightGear? y/n",
+            question,
             Style::new().fg(Color::Yellow).bold(),
         ));
+    }
+    if let Some(task) = &app.task {
+        lines.push(task_line(task, app.spinner));
     }
     if let Some((text, is_error)) = &app.message {
         let color = if *is_error { Color::Red } else { Color::Green };
@@ -492,6 +626,31 @@ fn draw_status(frame: &mut Frame, area: Rect, app: &App) {
     };
     lines.push(Line::styled(deck, Style::new().dim()));
     frame.render_widget(Paragraph::new(lines).wrap(Wrap { trim: true }), area);
+}
+
+/// "Installing 2024.1.8: downloading data [██████░░░░░░] 52%  1.0/1.9 GB"
+fn task_line(task: &Task, spinner: usize) -> Line<'_> {
+    let mut spans = vec![Span::styled(
+        format!("{}: {}", task.what, task.step),
+        Style::new().fg(Color::Cyan),
+    )];
+    match task.bytes {
+        Some((done, total)) if total > 0 => {
+            const WIDTH: usize = 20;
+            let filled = (done as f64 / total as f64 * WIDTH as f64) as usize;
+            spans.push(Span::raw(format!(
+                " [{}{}] {:>3}%  {:.1}/{:.1} GB",
+                "█".repeat(filled.min(WIDTH)),
+                "░".repeat(WIDTH - filled.min(WIDTH)),
+                done * 100 / total,
+                done as f64 / 1e9,
+                total as f64 / 1e9
+            )));
+        }
+        Some((done, _)) => spans.push(Span::raw(format!(" {:.1} GB", done as f64 / 1e9))),
+        None => spans.push(Span::raw(format!(" {}", SPINNER[spinner % SPINNER.len()]))),
+    }
+    Line::from(spans)
 }
 
 fn update_status(app: &App) -> String {
@@ -545,6 +704,15 @@ fn draw_footer(frame: &mut Frame, area: Rect, app: &App) {
         _ => "launch",
     };
     let keys: &[(&str, &str)] = match app.mode {
+        _ if app.confirm.is_some() => &[("y", "yes"), ("any other key", "no")],
+        Mode::Menu if matches!(app.selected(), Some(Row::Installed(_))) => &[
+            ("↑↓", "select"),
+            ("⏎", enter),
+            ("v", "VR on/off"),
+            ("d", "remove"),
+            ("r", "check now"),
+            ("q", "quit"),
+        ],
         Mode::Menu => &[
             ("↑↓", "select"),
             ("⏎", enter),
