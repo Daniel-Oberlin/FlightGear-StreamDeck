@@ -17,6 +17,10 @@ pub struct Config {
     pub repo: PathBuf,
     /// OpenDeck AppImage; defaults to the newest opendeck_*.AppImage in ~/flightgear.
     pub opendeck: Option<PathBuf>,
+    /// OpenDeck profile to show when OpenDeck is started for a flight, e.g. "FlightGear/Main".
+    pub opendeck_profile: Option<String>,
+    /// OpenDeck's settings folder, holding profiles/<device>.json.
+    pub opendeck_config: PathBuf,
     /// OpenXR runtime manifest exported as XR_RUNTIME_JSON in VR mode.
     pub vr_runtime_json: Option<PathBuf>,
     pub httpd_port: u16,
@@ -30,6 +34,8 @@ impl Default for Config {
             fg_base: PathBuf::from("/mnt/nocow/doberlin/flightgear"),
             repo: PathBuf::from(BUILD_REPO),
             opendeck: None,
+            opendeck_profile: Some("FlightGear/Main".into()),
+            opendeck_config: xdg_dir("XDG_CONFIG_HOME", ".config").join("opendeck"),
             vr_runtime_json: Some(PathBuf::from(
                 "/var/lib/flatpak/app/io.github.wivrn.wivrn/current/active/files/share/openxr/1/openxr_wivrn.json",
             )),

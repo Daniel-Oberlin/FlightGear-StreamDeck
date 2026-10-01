@@ -74,6 +74,47 @@ fn link_joysticks(cfg: &Config, home: &Path) -> Result<(), String> {
     Ok(())
 }
 
+/// Make OpenDeck open on `profile` for every device that has it, by setting the device's
+/// selected profile before OpenDeck starts (it reads this only at startup).
+/// Returns how many devices were set.
+pub fn select_opendeck_profile(opendeck_config: &Path, profile: &str) -> Result<usize, String> {
+    let profiles = opendeck_config.join("profiles");
+    let entries =
+        fs::read_dir(&profiles).map_err(|err| format!("{}: {err}", profiles.display()))?;
+    let mut set = 0;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        let (Some(device), Some("json")) = (
+            path.file_stem().and_then(|s| s.to_str()),
+            path.extension().and_then(|e| e.to_str()),
+        ) else {
+            continue;
+        };
+        if !profiles
+            .join(device)
+            .join(format!("{profile}.json"))
+            .is_file()
+        {
+            continue;
+        }
+        let mut config: serde_json::Value = fs::read_to_string(&path)
+            .ok()
+            .and_then(|text| serde_json::from_str(&text).ok())
+            .unwrap_or_else(|| serde_json::json!({}));
+        let Some(fields) = config.as_object_mut() else {
+            continue;
+        };
+        fields.insert("selected_profile".into(), profile.into());
+        let text = serde_json::to_string_pretty(&config).map_err(|err| err.to_string())?;
+        fs::write(&path, text).map_err(|err| format!("{}: {err}", path.display()))?;
+        set += 1;
+    }
+    if set == 0 {
+        return Err(format!("no OpenDeck device has a profile named {profile}"));
+    }
+    Ok(set)
+}
+
 pub fn start_opendeck(appimage: &Path) -> Result<Child, String> {
     let mut cmd = Command::new(appimage);
     cmd.arg("--hide")

@@ -309,21 +309,31 @@ impl App {
             ));
             return;
         }
+        // Problems with the Stream Deck are shown, but don't stop the flight.
+        let mut deck_warning = None;
         let opendeck = match &self.cfg.opendeck {
-            Some(path) if !process::opendeck_running() => match process::start_opendeck(path) {
-                Ok(child) => Some(child),
-                Err(err) => {
-                    self.message = Some((err, true));
-                    None
+            Some(path) if !process::opendeck_running() => {
+                if let Some(profile) = &self.cfg.opendeck_profile
+                    && let Err(err) =
+                        process::select_opendeck_profile(&self.cfg.opendeck_config, profile)
+                {
+                    deck_warning = Some(format!("Stream Deck page: {err}"));
                 }
-            },
+                match process::start_opendeck(path) {
+                    Ok(child) => Some(child),
+                    Err(err) => {
+                        deck_warning = Some(err);
+                        None
+                    }
+                }
+            }
             _ => None,
         };
         match process::start_flightgear(&self.cfg, &install, self.state.vr) {
             Ok(child) => {
                 self.state.last_flown = Some(install.name.clone());
                 self.state.save();
-                self.message = None;
+                self.message = deck_warning.map(|w| (w, true));
                 self.log_warning = false;
                 self.mode = Mode::Flying(Flight {
                     child,

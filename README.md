@@ -163,7 +163,7 @@ If you previously copied `http-control.nas` into `$FG_ROOT/Nasal`, delete that c
 
 For each launch, `fglaunch`:
 
-- starts Open Deck hidden in the tray (`--hide`) if it isn't already running, and stops it again when FlightGear exits. An Open Deck that was already running is left alone;
+- starts Open Deck hidden in the tray (`--hide`) if it isn't already running, opening on the FlightGear page (`FlightGear/Main` by default), and stops it again when FlightGear exits. An Open Deck that was already running is left alone, on whatever page it shows. The page is set only at startup, so switching virtual desktops or apps never moves the Stream Deck off the page you're on;
 - sets `FG_HOME` and `--fg-root` for the chosen install, so versions never share settings or data;
 - points `--terrasync-dir` at the shared scenery, which works with every version (it's selected by scenery service, not FlightGear version);
 - adds `--httpd=8080` and `--addon` for this repository's add-on. Setting these here, rather than in the launcher's *Additional Settings* box, keeps them in effect for every version, because the launcher saves its settings separately for each FlightGear version;
@@ -213,6 +213,8 @@ Settings are read from `~/.config/fglaunch/config.toml`. Every setting is option
 fg_base = "/mnt/nocow/doberlin/flightgear"   # holds installs/ and shared/
 repo = "/path/to/FlightGear-StreamDeck"     # default: the checkout fglaunch was built from
 opendeck = "/path/to/opendeck.AppImage"     # default: newest opendeck_*.AppImage in ~/flightgear
+opendeck_profile = "FlightGear/Main"        # Open Deck page to start on
+opendeck_config = "~/.config/opendeck"      # Open Deck's settings folder (write the full path)
 vr_runtime_json = "/path/to/openxr_runtime.json"   # default: my WiVRn flatpak runtime
 httpd_port = 8080
 log_limit_mb = 1024
